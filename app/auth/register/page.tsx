@@ -55,7 +55,7 @@ export default function RegisterPage() {
             <h3 className="text-2xl font-light leading-snug">
               Tecnologia de ponta <br />
               <span className="font-bold italic text-yellow-500">
-                Voldorico ALM Diesel.
+                Vodorico ALM Diesel.
               </span>
             </h3>
           </div>
@@ -97,7 +97,7 @@ export default function RegisterPage() {
               </label>
               <input
                 type="email"
-                placeholder="nome@voldorico.com"
+                placeholder="nome@vodorico.com"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#1a1a1e] border border-white/5 rounded-xl px-4 py-3 outline-none focus:border-yellow-500/40 transition-all text-sm mt-1"
               />
@@ -126,7 +126,7 @@ export default function RegisterPage() {
 
           <div className="mt-auto pt-8 text-center">
             <p className="text-gray-600 text-[9px] uppercase tracking-[0.3em]">
-              Voldorico ALM Diesel • Tecnologia & Força
+              Vodorico ALM Diesel • Tecnologia & Força
             </p>
           </div>
         </div>

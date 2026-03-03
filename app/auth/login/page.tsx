@@ -40,7 +40,7 @@ export default function LoginPage() {
               <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1 transition-colors group-focus-within:text-yellow-500">Usuário ou E-mail</label>
               <input
                 type="email"
-                placeholder="exemplo@voldorico.com"
+                placeholder="exemplo@vodorico.com"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#1a1a1e] border border-white/5 rounded-xl px-4 py-4 outline-none focus:border-blue-500/40 transition-all text-sm mt-1"
               />
@@ -75,7 +75,7 @@ export default function LoginPage() {
             </p>
 
           <div className="mt-auto pt-10 text-center">
-            <p className="text-gray-600 text-[10px] uppercase tracking-widest">Voldorico ALM Diesel © 2026</p>
+            <p className="text-gray-600 text-[10px] uppercase tracking-widest">Vodorico ALM Diesel © 2026</p>
           </div>
         </div>
 
