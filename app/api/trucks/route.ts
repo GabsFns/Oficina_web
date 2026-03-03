@@ -10,7 +10,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { plate, model, year, clientId } = await req.json();
+  const { plate, model, year, clientId, marca, type } = await req.json();
 
   if (!plate || !model || !year || !clientId) {
     return NextResponse.json(
@@ -23,6 +23,8 @@ export async function POST(req: Request) {
     data: {
       plate,
       model,
+      marca,
+      type,
       year: Number(year),
       clientId,
     },
