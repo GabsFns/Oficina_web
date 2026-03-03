@@ -103,7 +103,7 @@ model Orcamento {
   valor_total     Float
   fornecedor      String
   prazo_entrega   DateTime
-  status          StatusOrcamento
+  status          Status
   createdAt       DateTime      @default(now())
 
   ordemServiceId  String
