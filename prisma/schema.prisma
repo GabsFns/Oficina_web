@@ -63,8 +63,8 @@ model OrdemService {
 
   client               Client      @relation(fields: [clientId], references: [id])
   truck                Truck       @relation(fields: [truckId], references: [id])
-
-  diagnostico         Diagnostico[]
+  orcamentos           Orcamento[] 
+  diagnostico          Diagnostico[]
 }
 model Diagnostico {
   id                    String              @id @default(uuid())
@@ -78,7 +78,7 @@ model Diagnostico {
 
   ordemService          OrdemService        @relation(fields: [ordemServiceId], references: [id])
   user                  User                @relation(fields: [userId], references: [id])
-
+  
   fotos                 DiagnosticoFoto[]
 }
 
@@ -105,6 +105,7 @@ model Orcamento {
   prazo_entrega   DateTime
   status          Status
   createdAt       DateTime      @default(now())
+
 
   ordemServiceId  String
   ordemService    OrdemService  @relation(fields: [ordemServiceId], references: [id], onDelete: Cascade)
