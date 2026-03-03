@@ -18,7 +18,7 @@ model User {
   name        String
   email       String        @unique
   password    String
-  role        Roles
+  role        Roles?
   createdAt   DateTime      @default(now())
 
   diagnosticos Diagnostico[]
@@ -39,7 +39,7 @@ model Truck {
   id        String   @id @default(uuid())
   plate     String   @unique
   model     String
-  marca     String
+  marca     String?
   type      String
   year      Int
   clientId  String
