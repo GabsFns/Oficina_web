@@ -64,7 +64,7 @@ model OrdemService {
   client               Client      @relation(fields: [clientId], references: [id])
   truck                Truck       @relation(fields: [truckId], references: [id])
 
-  diagnosticos         Diagnosticos[]
+  diagnostico         Diagnostico[]
 }
 model Diagnostico {
   id                    String              @id @default(uuid())
