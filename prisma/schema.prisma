@@ -14,11 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id          String        @id @default(uuid())
+  name        String
+  email       String        @unique
+  password    String
+  role        Roles
+  createdAt   DateTime      @default(now())
+
+  diagnosticos Diagnostico[]
 }
 
 model Client {
@@ -26,16 +29,190 @@ model Client {
   name      String
   phone     String
   email     String?
-  trucks    Truck[]
   createdAt DateTime @default(now())
+
+  trucks    Truck[]
+  ordens    OrdemService[]
 }
 
 model Truck {
   id        String   @id @default(uuid())
   plate     String   @unique
   model     String
+  marca     String
+  type      String
   year      Int
   clientId  String
-  client    Client   @relation(fields: [clientId], references: [id])
   createdAt DateTime @default(now())
+
+  client    Client   @relation(fields: [clientId], references: [id])
+  ordens    OrdemService[]
+}
+
+model OrdemService {
+  id                   String      @id @default(uuid())
+  num_os               String      @unique
+  status               Status
+  problem_desc_client  String
+  date_input           DateTime
+  date_output          DateTime?
+  createdAt            DateTime    @default(now())
+
+  clientId             String
+  truckId              String
+
+  client               Client      @relation(fields: [clientId], references: [id])
+  truck                Truck       @relation(fields: [truckId], references: [id])
+
+  diagnosticos         Diagnosticos[]
+}
+model Diagnostico {
+  id                    String              @id @default(uuid())
+  problem_desc_fun      String
+  category              CategoriaDiagnostico
+  prazo_estimado        DateTime
+  createdAt             DateTime            @default(now())
+
+  ordemServiceId        String
+  userId                String
+
+  ordemService          OrdemService        @relation(fields: [ordemServiceId], references: [id])
+  user                  User                @relation(fields: [userId], references: [id])
+
+  fotos                 DiagnosticoFoto[]
+}
+
+model DiagnosticoFoto {
+  id              String        @id @default(uuid())
+  imageUrl        String        
+  descricao       String?
+  createdAt       DateTime      @default(now())
+
+  diagnosticoId   String
+  diagnostico     Diagnostico   @relation(fields: [diagnosticoId], references: [id], onDelete: Cascade)
+}
+
+model Orcamento {
+  id              String        @id @default(uuid())
+  num_os          String        // número da OS vinculada
+  codigo_peca     String
+  peca            String
+  marca_modelo    String
+  valor_unitario  Float
+  quantidade      Int
+  valor_total     Float
+  fornecedor      String
+  prazo_entrega   DateTime
+  status          StatusOrcamento
+  createdAt       DateTime      @default(now())
+
+  ordemServiceId  String
+  ordemService    OrdemService  @relation(fields: [ordemServiceId], references: [id], onDelete: Cascade)
+}
+
+enum Roles {
+  ADM
+  SUPER_ADM
+  MECANICO
+}
+
+enum Status {
+  ABERTA
+  AGUARDANDO_DIAGNOSTICO
+  EM_DIAGNOSTICO
+  DIAGNOSTICO_CONCLUIDO
+  AGUARDANDO_COTACAO
+  EM_COTACAO
+  COTACAO_CONCLUIDA
+  AGUARDANDO_APROVACAO
+  APROVADO
+  REJEITADO
+  AGUARDANDO_PECAS
+  EM_EXECUCAO
+  FINALIZADA
+  ENTREGUE
+  CANCELADA
+}
+
+enum CategoriaDiagnostico {
+  // MOTOR
+  MOTOR_GERAL
+  MOTOR_NAO_PEGA
+  MOTOR_FALHANDO
+  MOTOR_BATENDO
+  SUPER_AQUECIMENTO
+  BAIXA_PRESSAO_OLEO
+  CONSUMO_EXCESSIVO_OLEO
+  CONSUMO_EXCESSIVO_COMBUSTIVEL
+  VAZAMENTO_OLEO
+  VAZAMENTO_AGUA
+
+  // SISTEMA DE COMBUSTIVEL
+  BOMBA_INJETORA
+  BICOS_INJETORES
+  SISTEMA_COMMON_RAIL
+  FILTRO_COMBUSTIVEL
+  TANQUE_COMBUSTIVEL
+
+  // TURBINA
+  TURBINA
+  INTERCOOLER
+  SISTEMA_ADMISSAO
+
+  // ARREFECIMENTO
+  RADIADOR
+  BOMBA_DAGUA
+  VALVULA_TERMOSTATICA
+  VENTOINHA
+  MANGUEIRAS_ARREFECIMENTO
+
+  // CAMBIO / TRANSMISSAO
+  CAMBIO_MANUAL
+  CAMBIO_AUTOMATIZADO
+  SINCRONIZADORES
+  EMBREAGEM
+  ATUADOR_EMBREAGEM
+  CARDAN
+  DIFERENCIAL
+
+  // FREIOS
+  SISTEMA_FREIO_AR
+  COMPRESSOR_AR
+  VALVULA_PEDAL_FREIO
+  CUICA_FREIO
+  LONA_PASTILHA
+  DISCO_TAMBOR
+  ABS
+
+  // SUSPENSAO
+  SUSPENSAO_AR
+  AMORTECEDOR
+  MOLA
+  BUCHAS_SUSPENSAO
+  BARRA_ESTABILIZADORA
+
+  // DIRECAO
+  CAIXA_DIRECAO
+  BOMBA_DIRECAO
+  TERMINAL_DIRECAO
+  BARRA_DIRECAO
+
+  // SISTEMA ELETRICO
+  ALTERNADOR
+  MOTOR_PARTIDA
+  BATERIA
+  CHICOTE_ELETRICO
+  MODULO_ELETRONICO
+  PAINEL
+  SENSOR
+
+  // PNEUMATICO
+  SISTEMA_PNEUMATICO
+  VALVULA_PROTECAO
+  RESERVATORIO_AR
+
+  // OUTROS
+  VAZAMENTO_GERAL
+  REVISAO_PREVENTIVA
+  OUTROS
 }
