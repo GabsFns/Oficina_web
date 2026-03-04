@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -20,9 +21,10 @@ export default function RegisterPage() {
     });
 
     if (res.ok) {
-      router.push("/dashboard");
+      toast.success("Cadastro Realizado com sucesso")
+      setTimeout(() => router.push("/dashboard"), 1500);
     } else {
-      alert("Erro ao cadastrar");
+      toast.error("Erro ao cadastrar.");
     }
   }
 

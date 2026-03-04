@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +19,10 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push("/dashboard");
+      toast.success("Login Realizado com sucesso")
+      setTimeout(() => router.push("/dashboard"), 1500);
+    } else {
+      toast.error("Erro ao realizar Login")
     }
   }
 
