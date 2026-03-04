@@ -17,6 +17,8 @@ type Client = {
 
   const [plate, setPlate] = useState("");
   const [model, setModel] = useState("");
+  const [marca, setMarca] = useState("");
+  const [type, setType] = useState("");
   const [year, setYear] = useState("");
   const [clientId, setClientId] = useState("");
 
@@ -38,6 +40,8 @@ type Client = {
       body: JSON.stringify({
         plate,
         model,
+        marca,
+        type,
         year,
         clientId,
       }),
@@ -67,12 +71,29 @@ type Client = {
         />
 
         <input
+          placeholder="Marca"
+          className="border p-2 w-full"
+          value={marca}
+          onChange={(e) => setMarca(e.target.value)}
+        />
+
+        <input
           placeholder="Ano"
           type="number"
           className="border p-2 w-full"
           value={year}
           onChange={(e) => setYear(e.target.value)}
         />
+
+
+        <select className="border p-2 w-full"
+          value={type}
+          onChange={(e) => setType(e.target.value)}>
+
+          <option value="">Selecione tipo do Caminhão</option>
+          <option value="">exemplo 1</option>
+          <option value="">exemplo 2</option>
+        </select>
 
         <select
           className="border p-2 w-full"

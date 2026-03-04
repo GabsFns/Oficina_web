@@ -9,11 +9,14 @@ type Truck = {
   id: string;
   plate: string;
   model: string;
+  marca: string;
+  type: string;
   year: number;
   createdAt: string;
   client: {
     id: string;
     name: string;
+    phone: string;
   };
 };
   const [trucks, setTrucks] = useState<Truck[]>([]);
@@ -40,8 +43,11 @@ type Truck = {
           <div key={truck.id} className="border p-4 rounded shadow-sm">
             <p><strong>Placa:</strong> {truck.plate}</p>
             <p><strong>Modelo:</strong> {truck.model}</p>
+            <p><strong>marca:</strong> {truck.model}</p>
+            <p><strong>type:</strong> {truck.model}</p>
             <p><strong>Ano:</strong> {truck.year}</p>
             <p><strong>Cliente:</strong> {truck.client?.name}</p>
+            <p><strong>Telefone:</strong> {truck.client?.phone}</p>
           </div>
         ))}
       </div>
