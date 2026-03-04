@@ -91,8 +91,8 @@ type Client = {
           onChange={(e) => setType(e.target.value)}>
 
           <option value="">Selecione tipo do Caminhão</option>
-          <option value="">exemplo 1</option>
-          <option value="">exemplo 2</option>
+          <option value="exemplo 1">exemplo 1</option>
+          <option value="exemplo 2">exemplo 2</option>
         </select>
 
         <select
