@@ -30,9 +30,18 @@ export default function Dashboard() {
       try {
         // 2. Adicione a chamada para /api/auth/me
         const [clientsRes, trucksRes, userRes] = await Promise.all([
-  fetch("/api/clients", { credentials: "include" }),
-  fetch("/api/trucks", { credentials: "include" }),
-  fetch("/api/auth/me", { credentials: "include" }),
+  fetch("/api/clients", { 
+    next: {
+      tags: ["clients"],
+      revalidate:  60
+    },
+    credentials: "include" }),
+  fetch("/api/trucks", {
+  next: { tags: ["trucks"], revalidate: 60 },
+  credentials: "include",
+}),
+  fetch("/api/auth/me", { cache: "no-store", credentials: "include" }),
+  
 ]);
         
         const clientsData = await clientsRes.json();
@@ -70,53 +79,11 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-screen bg-[#0a0a0b] text-white font-sans">
       
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-[#121214] border-r border-white/5 flex flex-col p-6">
-        <div className="mb-10 flex items-center gap-3">
-          <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-black font-bold">V</div>
-          <span className="font-bold tracking-tight text-xl">ALM Diesel</span>
-        </div>
-
-        <nav className="flex-1 space-y-2">
-          <NavItem icon={<LayoutDashboard size={20}/>} label="Dashboard" active />
-          <NavItem icon={<Users size={20}/>} label="Clientes" href="/dashboard/clients" />
-          <NavItem icon={<Truck size={20}/>} label="Caminhões" href="/dashboard/trucks" />
-          <NavItem icon={<Settings size={20}/>} label="Configurações" />
-        </nav>
-
-        {/* User Info Section DINÂMICO */}
-        <div className="mt-auto pt-6 border-t border-white/5 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 to-yellow-700 flex items-center justify-center text-black font-bold text-xs">
-            {user.initials}
-          </div>
-          <div className="overflow-hidden">
-            <p className="text-sm font-medium truncate">{user.name}</p>
-            <p className="text-[10px] text-gray-500 truncate">{user.email}</p>
-          </div>
-          <button className="ml-auto text-gray-500 hover:text-white transition-colors">
-            <LogOut size={18} />
-          </button>
-        </div>
-      </aside>
+    
 
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col">
-        <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#121214]/50 backdrop-blur-md sticky top-0 z-10">
-          <div className="relative w-96">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-            <input 
-              type="text" 
-              placeholder="Buscar cliente ou placa..." 
-              className="w-full bg-[#1a1a1e] border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:border-yellow-500/50 transition-all"
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-white/5 rounded-lg text-gray-400"><Bell size={20}/></button>
-            <button className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
-              <Plus size={18} /> Nova Ordem
-            </button>
-          </div>
-        </header>
+        
 
         <div className="p-8 overflow-y-auto">
           <div className="mb-8">
