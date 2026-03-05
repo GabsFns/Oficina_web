@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Menu, X, ArrowRight, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
+import  WhatsButton  from "./components/ui/bttZap"
 
 // Configuração de animação que REPETE ao subir e descer a página
 const motionProps = {
@@ -24,7 +25,7 @@ export default function LandingPage() {
         className="fixed w-full z-50 flex justify-between items-center px-6 md:px-10 py-5 backdrop-blur-md border-b border-white/5 bg-[#0a0a0b]/80"
       >
         <div className="text-lg md:text-xl font-black tracking-tighter uppercase italic">
-          Voldorico<span className="text-yellow-500">ALM</span>
+          Vodorico<span className="text-yellow-500">ALM</span>
         </div>
 
         {/* Desktop Nav */}
@@ -63,26 +64,54 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0a0a0b] via-[#0a0a0b]/90 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 max-w-4xl w-full">
-          <motion.h2 {...motionProps} transition={{ delay: 0.3 }} className="text-yellow-500 text-xs md:text-sm font-bold tracking-[0.3em] uppercase mb-4">
-            Potência sob controle
-          </motion.h2>
-          <motion.h1 {...motionProps} transition={{ delay: 0.5 }} className="text-5xl sm:text-6xl md:text-8xl font-black leading-[0.9] uppercase italic mb-8">
-            Engenharia <br /> 
-            <span className="text-white bg-white/5 backdrop-blur-sm border-t border-b border-white/20 inline-block mt-2 px-16 py-2">
-              Diesel Bruta
-            </span>
-          </motion.h1>
-          <motion.p {...motionProps} transition={{ delay: 0.7 }} className="text-gray-400 text-sm md:text-lg max-w-xl mb-10 font-light leading-relaxed">
-            Especialistas em alta performance e manutenção pesada. Unimos tecnologia de diagnóstico de ponta com a força da mecânica tradicional.
-          </motion.p>
-          <motion.div {...motionProps} transition={{ delay: 0.9 }} className="flex flex-col sm:flex-row gap-4">
-            <button className="bg-yellow-500 text-black px-18 py-6 font-black uppercase text-base md:text-base hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 group">
-              Solicitar Orçamento <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-            </button>
-          </motion.div>
-        </div>
+      <div className="relative z-10 max-w-9xl w-full">
+
+  <motion.h2
+    {...motionProps}
+    transition={{ delay: 0.3 }}
+    className="text-yellow-500 text-xs md:text-sm font-bold tracking-[0.35em] uppercase mb-4"
+  >
+    Potência sob controle
+  </motion.h2>
+
+  <motion.h1
+    {...motionProps}
+    transition={{ delay: 0.5 }}
+    className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[1] uppercase italic mb-8"
+  >
+    Problemas com seu Caminhão?
+    <br />
+
+    <span className="text-white bg-white/5 backdrop-blur-sm border-t border-b border-white/20 inline-block mt-3 px-4 py-2">
+      Nós Temos a Solução.
+    </span>
+  </motion.h1>
+
+  <motion.p
+    {...motionProps}
+    transition={{ delay: 0.7 }}
+    className="text-gray-400 text-sm md:text-lg lg:text-xl max-w-3xl mb-10 font-light leading-relaxed"
+  >
+    Especialistas em mecânica diesel pesada em Nova Iguaçu.
+    Diagnóstico eletrônico avançado, manutenção e reparos
+    realizados com tecnologia, precisão e confiança para
+    manter seu caminhão sempre na estrada.
+  </motion.p>
+
+  <motion.div
+    {...motionProps}
+    transition={{ delay: 0.9 }}
+    className="flex flex-col sm:flex-row gap-4"
+  >
+    <button className="bg-yellow-500 text-black px-10 py-5 font-black uppercase text-sm md:text-base hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 group">
+      Solicitar Orçamento
+      <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+    </button>
+  </motion.div>
+
+</div>
       </section>
+      
 
       {/* SERVICES GRID */}
       <section id="servicos" className="py-20 px-6 md:px-10 bg-[#0f0f11]">
@@ -106,7 +135,7 @@ export default function LandingPage() {
       {/* LOCATION & CONTACT */}
       <section id="contato" className="py-20 px-6 md:px-10 border-t border-white/5 relative overflow-hidden">
         <div className="hidden lg:block italic font-black text-[12rem] uppercase leading-none opacity-[0.02] absolute -bottom-10 left-0 pointer-events-none select-none">
-          VOLDORICO
+          VODORICO
         </div>
         
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
@@ -148,16 +177,17 @@ export default function LandingPage() {
                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 ml-1">Placa ou Modelo</label>
                 <input type="text" className="w-full bg-black/50 border border-white/5 p-4 rounded-xl outline-none focus:border-yellow-500 transition-all text-sm font-mono tracking-widest"/>
               </div>
-              <button className="w-full bg-yellow-500 text-black py-5 font-black uppercase tracking-widest text-xs md:text-sm hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 mt-4">
+              {/* <button className="w-full bg-yellow-500 text-black py-5 font-black uppercase tracking-widest text-xs md:text-sm hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 mt-4">
                 <Phone size={18} /> Iniciar Conversa
-              </button>
+              </button> */}
+              <WhatsButton/>
             </form>
           </motion.div>
         </div>
       </section>
 
       <footer className="py-10 text-center border-t border-white/5 text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-gray-600 px-6">
-        © 2026 Voldorico ALM Diesel — High Performance Trucks
+        © 2026 Vodorico ALM Diesel — High Performance Trucks
       </footer>
     </div>
   );
