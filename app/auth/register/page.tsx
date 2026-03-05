@@ -117,7 +117,6 @@ export default function RegisterPage() {
                 className="w-full bg-[#1a1a1e] border border-white/5 rounded-xl px-4 py-3 outline-none focus:border-yellow-500/40 transition-all text-sm mt-1"
               />
             </div>
-
             <button
               type="submit"
               className="w-full bg-yellow-500 hover:bg-yellow-400 text-black py-4 rounded-xl font-bold transition-all shadow-lg shadow-yellow-900/10 active:scale-[0.98] mt-6 uppercase tracking-wider text-sm"

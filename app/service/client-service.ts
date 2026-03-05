@@ -1,0 +1,35 @@
+// src/services/client-service.ts
+import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
+import { cache } from "react";
+
+export type Client = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  createdAt: Date;
+  trucks?: {
+    id: string;
+    plate: string;
+    model: string;
+    marca: string | null;
+    type: string;
+    year: number;
+    clientId: string;
+    createdAt: Date;
+  }[];
+};
+
+
+
+export const getClients = cache(async (includeTrucks = false) => {
+    
+    const clients = await prisma.client.findMany({
+ 
+    include: includeTrucks ? { trucks: true } : undefined,
+    orderBy: { createdAt: "desc" },
+  });
+
+  return clients;
+});
