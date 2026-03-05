@@ -1,13 +1,17 @@
-// src/services/truck-service.ts
 import { prisma } from "@/lib/prisma";
+import { cache } from "react";
+import { cookies } from "next/headers";
 
-export async function getTrucks() {
-  "use server";
+export const getTrucks = cache(async () => {
+
+  cookies();
 
   const trucks = await prisma.truck.findMany({
-    include: { client: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
+    include: {
+      client: true,
+    },
   });
 
   return trucks;
-}
+});
