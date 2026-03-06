@@ -72,7 +72,10 @@ export default function EntryPage() {
             </span>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={(e) => {
+    e.preventDefault(); // previne recarregar a página
+    handleLogin();      // chama sua função
+  }} className="space-y-6">
             <div className="relative group">
               <input
                 required
