@@ -1,6 +1,6 @@
 // src/services/client-service.ts
 import { prisma } from "@/lib/prisma";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { cache } from "react";
 
 export type Client = {
@@ -25,7 +25,8 @@ export type Client = {
 
 export const getClients = cache(async (includeTrucks = false) => {
 'use server'
-  cookies(); // marca como request-based (resolve o erro do Next)
+  cookies(); 
+  headers();// marca como request-based (resolve o erro do Next)
 
   const clients = await prisma.client.findMany({
     include: includeTrucks ? { trucks: true } : undefined,
