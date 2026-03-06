@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
  import toast from "react-hot-toast";
+ import { Toaster } from "react-hot-toast";
 interface User {
   name: string;
   email: string;
@@ -72,49 +73,50 @@ export default function Sidebar({ user }: { user: User }) {
 
 async function handleLogout() {
   const toastId = toast.custom((t) => (
-    <div
-      className={`bg-white shadow-lg rounded-lg p-4 border flex flex-col gap-3 ${
-        t.visible ? "animate-enter" : "animate-leave"
-      }`}
-    >
-      <p className="font-semibold">Deseja sair da conta?</p>
-      <p className="text-sm text-gray-500">
-        Você precisará fazer login novamente.
-      </p>
+  <div
+    className={`bg-white shadow-lg rounded-lg p-5 border flex flex-col items-center text-center gap-3 ${
+      t.visible ? "animate-enter" : "animate-leave"
+    }`}
+  >
+    <p className="font-semibold text-lg">Deseja sair da conta?</p>
 
-      <div className="flex gap-2 justify-end">
-        <button
-          className="px-3 py-1 text-sm bg-gray-200 rounded"
-          onClick={() => toast.dismiss(t.id)}
-        >
-          Cancelar
-        </button>
+    <p className="text-sm text-gray-500">
+      Você precisará fazer login novamente.
+    </p>
 
-        <button
-          className="px-3 py-1 text-sm bg-red-500 text-white rounded"
-          onClick={async () => {
-            toast.dismiss(t.id);
+    <div className="flex gap-2 mt-2">
+      <button
+        className="px-4 py-1 text-sm bg-gray-200 rounded-lg"
+        onClick={() => toast.dismiss(t.id)}
+      >
+        Cancelar
+      </button>
 
-            const promise = fetch("/api/auth/logout", {
-              method: "POST",
-            });
+      <button
+        className="px-4 py-1 text-sm bg-red-500 text-white rounded-lg"
+        onClick={async () => {
+          toast.dismiss(t.id);
 
-            toast.promise(promise, {
-              loading: "Saindo da conta...",
-              success: () => {
-                router.replace("/auth/login");
-                router.refresh();
-                return "Logout realizado";
-              },
-              error: "Erro ao sair da conta",
-            });
-          }}
-        >
-          Sair
-        </button>
-      </div>
+          const promise = fetch("/api/auth/logout", {
+            method: "POST",
+          });
+
+          toast.promise(promise, {
+            loading: "Saindo da conta...",
+            success: () => {
+              router.replace("/auth/login");
+              router.refresh();
+              return "Logout realizado 👋";
+            },
+            error: "Erro ao sair da conta",
+          });
+        }}
+      >
+        Sair
+      </button>
     </div>
-  ));
+  </div>
+));
 
   return toastId;
 }
@@ -128,7 +130,15 @@ async function handleLogout() {
         </div>
         <span className="font-bold tracking-tight text-xl">ALM Diesel</span>
       </div>
-
+<Toaster
+  position="top-center"
+  toastOptions={{
+    style: {
+      background: "#fff",
+      color: "#000",
+    },
+  }}
+/>
       {/* MENU */}
       <nav className="flex-1 space-y-2">
         {menuItems.map((item) => (
