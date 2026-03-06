@@ -4,14 +4,12 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
     const {
       num_os,
       problem_desc_client,
       date_input,
       clientId,
       truckId,
-      userId
     } = body;
 
     const order = await prisma.ordemService.create({
@@ -23,11 +21,9 @@ export async function POST(req: Request) {
         clientId,
         truckId,
 
+        // cria histórico inicial
         statusHistory: {
-          create: {
-            status: "AGUARDANDO_DIAGNOSTICO",
-            userId: userId
-          }
+          create: { status: "AGUARDANDO_DIAGNOSTICO" }
         }
       },
     });
@@ -36,7 +32,6 @@ export async function POST(req: Request) {
 
   } catch (error) {
     console.error(error);
-
     return NextResponse.json(
       { error: "Erro ao criar ordem de serviço" },
       { status: 500 }

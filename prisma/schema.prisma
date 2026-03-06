@@ -22,7 +22,7 @@ model User {
   createdAt   DateTime      @default(now())
 
   diagnosticos Diagnostico[]
-  statusHistory OrdemStatusHistory[]
+  
 }
 
 model Client {
@@ -34,6 +34,7 @@ model Client {
 
   trucks    Truck[]
   ordens    OrdemService[]
+  
 }
 
 model Truck {
@@ -227,8 +228,7 @@ model OrdemStatusHistory {
   createdAt DateTime @default(now())
 
   ordemId   String
-  userId    String
+ 
 
   ordem     OrdemService @relation(fields: [ordemId], references: [id], onDelete: Cascade)
-  user      User         @relation(fields: [userId], references: [id])
 }
