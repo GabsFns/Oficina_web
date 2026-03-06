@@ -23,15 +23,15 @@ export type Client = {
 
 
 
-export const getClients = cache(async (includeTrucks = false) => {
-'use server'
-  cookies(); 
-  headers();// marca como request-based (resolve o erro do Next)
 
-  const clients = await prisma.client.findMany({
+export async function getClients(includeTrucks = false) {
+  'use server'
+  
+  cookies(); // marca request-based
+  headers(); // também marca
+
+  return await prisma.client.findMany({
     include: includeTrucks ? { trucks: true } : undefined,
     orderBy: { createdAt: "desc" },
   });
-
-  return clients;
-});
+}

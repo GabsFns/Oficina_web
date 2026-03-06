@@ -12,7 +12,7 @@ export default async function ClientsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
           <p className="text-yellow-500 text-xs font-bold uppercase tracking-[0.2em] mb-1">Gerenciamento</p>
-          <h1 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter">
+          <h1 className="text-3xal md:text-4xl font-black uppercase italic tracking-tighter">
             Clientes <span className="text-white/20">Cadastrados</span>
           </h1>
         </div>
