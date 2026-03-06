@@ -27,7 +27,7 @@ export default function EntryPage() {
       if (!res.ok) throw new Error(data.error);
 
       toast.success(data.message);
-      router.push("/dashboard");
+      router.push("/auth/register");
     } catch (err: any) {
       toast.error(err.message || "Erro no login");
     } finally {
