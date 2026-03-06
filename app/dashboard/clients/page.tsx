@@ -1,15 +1,23 @@
+'use client';
 import { getClients } from "../../service/client-service";
 import { Plus, User, Phone, Settings2, Search } from "lucide-react";
 import Link from "next/link";
 import { cookies, headers } from "next/headers";
+import { useEffect, useState } from "react";
 
 export default async function ClientsPage() {
-  'use server' // força request-based
+  const [clients, setClients] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+useEffect(() => {
+    fetch('/api/clients')
+      .then(res => res.json())
+      .then(data => {
+        setClients(data);
+        setLoading(false);
+      });
+  }, []);
 
-  cookies();  // marca como request-bound
-  headers();  // marca como request-bound
-
-  const clients = await getClients();
+  if (loading) return <p>Carregando clientes...</p>;
 
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-white p-6 md:p-10 font-sans">

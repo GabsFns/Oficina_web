@@ -2,11 +2,17 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const clients = await prisma.client.findMany({
-    include: { trucks: true },
-  });
+  try {
+    const clients = await prisma.client.findMany({
+      include: { trucks: true },
+      orderBy: { createdAt: "desc" },
+    });
 
-  return NextResponse.json(clients);
+    return NextResponse.json(clients); 
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Erro ao buscar clientes" }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
