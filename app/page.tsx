@@ -32,7 +32,7 @@ export default function LandingPage() {
         <div className="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
           <a href="#servicos" className="hover:text-yellow-500 transition-colors">Serviços</a>
           <a href="#contato" className="hover:text-yellow-500 transition-colors">Contato</a>
-          <a href="/secure" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área do Cliente</a>
+          <a href="/secure" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área</a>
         </div>
 
         {/* Mobile Toggle */}
@@ -45,7 +45,7 @@ export default function LandingPage() {
           <div className="absolute top-full left-0 w-full bg-[#0a0a0b] border-b border-white/5 flex flex-col p-8 gap-6 md:hidden animate-in slide-in-from-top duration-300">
             <a href="#servicos" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold uppercase italic">Serviços</a>
             <a href="#contato" onClick={() => setIsMenuOpen(false)} className="text-xl font-bold uppercase italic">Contato</a>
-            <a href="/login" className="text-xl font-bold uppercase italic text-yellow-500">Área</a>
+            <a href="/secure" className="text-xl font-bold uppercase italic text-yellow-500">Área</a>
           </div>
         )}
       </motion.nav>
