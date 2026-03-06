@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const trucks = await prisma.truck.findMany({
     include: { client: true },
+     orderBy: { createdAt: "desc" },
   });
 
   return NextResponse.json(trucks);

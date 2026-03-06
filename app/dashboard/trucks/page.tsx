@@ -1,9 +1,13 @@
-import { getTrucks } from "../../service/truck-service";
+'use client'
 import { Plus, Truck, Hash, User, Calendar, Settings2, Search } from "lucide-react";
 import Link from "next/link";
+import { useTrucks } from '../../hooks/useTrucks'
 
 export default async function TrucksPage() {
-  const trucks = await getTrucks();
+ const { trucks, isLoading, error } = useTrucks()
+ 
+if (isLoading) return <p className="text-white">Carregando veículos...</p>
+  if (error) return <p className="text-red-500">Erro ao carregar veículos</p>
 
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-white p-6 md:p-10 font-sans">
@@ -49,7 +53,7 @@ export default async function TrucksPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {trucks.map((truck) => (
+              {trucks.map((truck: any) => (
                 <tr key={truck.id} className="hover:bg-white/[0.02] transition-colors group">
                   
                   {/* VEÍCULO E PLACA */}
