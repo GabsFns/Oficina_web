@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export async function POST(req: Request) {
   const { password } = await req.json();
 
-  const hash = process.env.NEXT_PUBLIC_ACCESS_PASSWORD_HASH;
+  const hash = process.env.ACCESS_PASSWORD_HASH;
 
   if (!hash) return NextResponse.json({ error: "Senha não configurada" }, { status: 500 });
 
