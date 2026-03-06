@@ -24,7 +24,7 @@ export type Client = {
 
 
 export const getClients = cache(async (includeTrucks = false) => {
-
+'use server'
   cookies(); // marca como request-based (resolve o erro do Next)
 
   const clients = await prisma.client.findMany({

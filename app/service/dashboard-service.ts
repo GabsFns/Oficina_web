@@ -4,7 +4,7 @@ import { getUser } from "./auth-service";
 import { cookies } from "next/headers";
 
 export const getDashboardData = cache(async () => {
-
+  'use server'
   // necessário para evitar erro de cache do next
   cookies();
 

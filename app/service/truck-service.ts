@@ -3,9 +3,8 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 
 export const getTrucks = cache(async () => {
-
+  'use server'
   cookies();
-
   const trucks = await prisma.truck.findMany({
     orderBy: { createdAt: "desc" },
     include: {

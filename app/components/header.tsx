@@ -1,13 +1,10 @@
 "use client";
 
 import { Search, Bell, Plus } from "lucide-react";
-
+import Link from "next/link"
 
 
 export default function Header() {
-
- 
-
   return (
     <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#121214]/50 backdrop-blur-md sticky top-0 z-10">
       <div className="relative w-96">
@@ -26,9 +23,12 @@ export default function Header() {
         <button className="p-2 hover:bg-white/5 rounded-lg text-gray-400">
           <Bell size={20} />
         </button>
-        <button className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
-          <Plus size={18} /> Nova Ordem
-        </button>
+        <Link
+  href="/dashboard/orders/new"
+  className="bg-yellow-500 hover:bg-yellow-400 text-black px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all"
+>
+  <Plus size={18} /> Nova Ordem
+</Link>
       </div>
     </header>
   );

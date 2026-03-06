@@ -22,7 +22,9 @@
     "pg": "^8.19.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-hot-toast": "^2.6.0"
+    "react-hot-toast": "^2.6.0",
+    "react-input-mask": "^2.0.4",
+    "react-number-format": "^5.4.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -31,6 +33,7 @@
     "@types/pg": "^8.18.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-input-mask": "^3.0.6",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prisma": "^7.4.2",

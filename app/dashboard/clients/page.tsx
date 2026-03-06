@@ -1,37 +1,101 @@
-"use client";
+import { getClients } from "../../service/client-service";
+import { Plus, User, Phone, Settings2, Search } from "lucide-react";
+import Link from "next/link";
 
-
-import { useEffect, useState } from "react";
-
-export default function ClientsPage() {
-  const [clients, setClients] = useState([]);
-
-type ClientPayload = {
-    id: string;
-    name: string;
-    phone: string;
-}
-  useEffect(() => {
-    fetch("/api/clients")
-      .then(res => res.json())
-      .then(data => setClients(data));
-  }, []);
+export default async function ClientsPage() {
+  const clients = await getClients();
 
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">Clientes</h1>
+    <div className="min-h-screen bg-[#0a0a0b] text-white p-6 md:p-10 font-sans">
+      
+      {/* HEADER DA PÁGINA */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div>
+          <p className="text-yellow-500 text-xs font-bold uppercase tracking-[0.2em] mb-1">Gerenciamento</p>
+          <h1 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter">
+            Clientes <span className="text-white/20">Cadastrados</span>
+          </h1>
+        </div>
 
-      <a href="/dashboard/clients/new" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Novo Cliente
-      </a>
+        <Link
+          href="/dashboard/clients/new"
+          className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-xl font-bold uppercase text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-yellow-500/10 active:scale-95"
+        >
+          <Plus size={18} strokeWidth={3} /> Novo Cliente
+        </Link>
+      </div>
 
-      <ul className="mt-6 space-y-2">
-        {clients.map((client: ClientPayload) => (
-          <li key={client.id} className="border p-3 rounded">
-            {client.name} - {client.phone}
-          </li>
-        ))}
-      </ul>
+      {/* ÁREA DA TABELA */}
+      <div className="bg-[#121214] border border-white/5 rounded-[2rem] overflow-hidden shadow-2xl">
+        
+        {/* BARRA DE PESQUISA (UI SOMENTE) */}
+        <div className="p-6 border-b border-white/5 bg-white/[0.02] flex items-center gap-3">
+          <Search size={18} className="text-gray-500" />
+          <input 
+            type="text" 
+            placeholder="Buscar por nome, placa ou telefone..." 
+            className="bg-transparent border-none outline-none text-sm text-gray-400 w-full"
+          />
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/5 bg-white/[0.01]">
+                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-bold text-gray-500">Cliente</th>
+                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-bold text-gray-500">Contato</th>
+                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-bold text-gray-500">Status</th>
+                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {clients.map((client) => (
+                <tr key={client.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center text-yellow-500">
+                        <User size={18} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-200 group-hover:text-yellow-500 transition-colors uppercase italic tracking-tight">
+                          {client.name}
+                        </p>
+                        <p className="text-xs text-gray-600 uppercase font-mono">ID: {client.id.toString().slice(-6)}</p>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                      <Phone size={14} className="text-yellow-500/50" />
+                      {client.phone}
+                    </div>
+                  </td>
+
+                  <td className="px-8 py-6">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-green-500/10 text-green-500 border border-green-500/20">
+                      Ativo
+                    </span>
+                  </td>
+
+                  <td className="px-8 py-6 text-right">
+                    <button className="text-gray-600 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg">
+                      <Settings2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* FOOTER DA TABELA */}
+        <div className="p-6 border-t border-white/5 bg-white/[0.01] text-center">
+          <p className="text-[10px] text-gray-600 uppercase tracking-widest">
+            Total de {clients.length} clientes na base Voldorico
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

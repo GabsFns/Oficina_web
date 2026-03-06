@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, Truck, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, Truck, Settings, LogOut, ListOrdered } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
@@ -51,6 +51,11 @@ const menuItems = [
     href: "/dashboard/trucks",
     label: "Caminhões",
     icon: <Truck size={20} />,
+  },
+  {
+    href: "/dashboard/orders",
+    label: "Serviços",
+    icon: <ListOrdered size={20}/>,
   },
   {
     href: "/dashboard/settings",
