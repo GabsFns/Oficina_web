@@ -4,19 +4,35 @@ import { verifyToken } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
+  const access = request.cookies.get("oficina_access")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  const { pathname } = request.nextUrl;
+
+  // bloquear auth se não passou pelo acesso
+  if (pathname.startsWith("/auth") && !access) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  try {
-    await verifyToken(token);
-    return NextResponse.next();
-  } catch {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  // proteger dashboard
+  if (pathname.startsWith("/dashboard")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    try {
+      await verifyToken(token);
+      return NextResponse.next();
+    } catch {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/auth/:path*"
+  ],
 };
