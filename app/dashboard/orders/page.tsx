@@ -1,13 +1,20 @@
 'use client'
-import { getOrders } from "../../service/order-service"; // Supondo que seu service siga este padrão
 import { Plus, ClipboardList, Search, Clock, CheckCircle2, AlertCircle, Wrench, MoreHorizontal } from "lucide-react";
 import useSWR from 'swr'
+import ModalTabs from "../_components/modal-tabs";
+import { useState } from "react";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default async function OrdersPage() {
-  
+    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = (order: any) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };    
+    
   const { data: orders, isLoading, error } = useSWR('/api/orders', fetcher, { refreshInterval: 10000 });
 
   if (isLoading) return <div>Carregando ordens...</div>
@@ -140,15 +147,54 @@ const getStatusStyle = (status: string) => {
 
                   {/* AÇÕES */}
                   <td className="px-8 py-6 text-right">
-                    <button className="text-gray-600 hover:text-white transition-all p-2 hover:bg-white/5 rounded-lg">
+                    <button  onClick={() => openModal(order)} className="text-gray-600 hover:text-white transition-all p-2 hover:bg-white/5 rounded-lg">
                       <MoreHorizontal size={20} />
                     </button>
                   </td>
                 </tr>
               ))}
-            </tbody>
+            </tbody>    
           </table>
         </div>
+ {/* Modal de O.S. com abas */}
+      {selectedOrder && (
+        <ModalTabs
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={`Ordem #${selectedOrder.id}`}
+          tabs={[
+            {
+              label: 'Orçamento',
+              content: (
+                <div>
+                  <p>Valor estimado: {selectedOrder.budget || 'N/A'}</p>
+                  <p>Itens: {selectedOrder.budget_items?.join(', ') || 'N/A'}</p>
+                </div>
+              ),
+            },
+            {
+              label: 'Diagnóstico',
+              content: (
+                <div>
+                  <p>{selectedOrder.diagnosis || 'Sem diagnóstico ainda.'}</p>
+                  <p>Resultado: {selectedOrder.result || 'N/A'}</p>
+                </div>
+              ),
+            },
+            {
+              label: 'Dados do Cliente',
+              content: (
+                <div>
+                  <p>Nome: {selectedOrder.client?.name}</p>
+                  <p>Telefone: {selectedOrder.client?.phone}</p>
+                  <p>Placa do veículo: {selectedOrder.truck?.plate}</p>
+                  <p>Modelo: {selectedOrder.truck?.model}</p>
+                </div>
+              ),
+            },
+          ]}
+        />
+      )}
 
         {/* FOOTER */}
         <div className="p-6 border-t border-white/5 bg-white/[0.01] flex justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
