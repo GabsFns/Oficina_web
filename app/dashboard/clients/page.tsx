@@ -1,8 +1,8 @@
 'use client';
-import { getClients } from "../../service/client-service";
+
 import { Plus, User, Phone, Settings2, Search } from "lucide-react";
 import Link from "next/link";
-import { cookies, headers } from "next/headers";
+
 import { useEffect, useState } from "react";
 
 export default async function ClientsPage() {
