@@ -2,9 +2,19 @@ import { ReactNode, Suspense } from "react";
 import Sidebar from "../components/sidebar";
 import Header from "../components/header";
 import { getDashboardData } from "../service/dashboard-service";
-
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 async function SidebarWrapper() {
+noStore(); // força verificação toda vez
 
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  const token_ofi = cookieStore.get("oficina_access");
+
+  if (!token || !token_ofi) {
+    redirect("/");
+  }
   const data = await getDashboardData();
 
   const user = {

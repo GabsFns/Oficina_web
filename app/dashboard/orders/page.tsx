@@ -3,17 +3,11 @@ import { Plus, ClipboardList, Search, Clock, CheckCircle2, AlertCircle, Wrench, 
 import useSWR from 'swr'
 import ModalTabs from "../_components/modal-tabs";
 import { useState } from "react";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default async function OrdersPage() {
-     const cookieStore = await cookies();
-    const token = cookieStore.get("token");
-    const token_ofi = cookieStore.get("oficina_access");
-    if (!token && token_ofi) {
-      redirect("/");
-    }
+  
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

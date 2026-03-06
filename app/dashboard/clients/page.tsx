@@ -2,17 +2,10 @@
 
 import { Plus, User, Phone, Settings2, Search } from "lucide-react";
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 import { useEffect, useState } from "react";
 
 export default async function ClientsPage() {
-     const cookieStore = await cookies();
-    const token = cookieStore.get("token");
-    const token_ofi = cookieStore.get("oficina_access");
-    if (!token && token_ofi) {
-      redirect("/");
-    }
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 useEffect(() => {

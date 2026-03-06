@@ -3,16 +3,10 @@ import { getDashboardData } from "../service/dashboard-service";
 import StatsCards from "./_components/stats-cards";
 import ClientsList from "./_components/clients-list";
 import TrucksList from "./_components/truck-list";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 
 export default async function DashboardPage() {
-   const cookieStore = await cookies();
-  const token = cookieStore.get("token");
-  const token_ofi = cookieStore.get("oficina_access");
-  if (!token && token_ofi) {
-    redirect("/");
-  }
+
   const data = await getDashboardData();
 
   return (

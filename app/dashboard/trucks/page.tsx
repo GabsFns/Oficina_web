@@ -2,15 +2,9 @@
 import { Plus, Truck, Hash, User, Calendar, Settings2, Search } from "lucide-react";
 import Link from "next/link";
 import { useTrucks } from '../../hooks/useTrucks'
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 export default async function TrucksPage() {
-     const cookieStore = await cookies();
-    const token = cookieStore.get("token");
-    const token_ofi = cookieStore.get("oficina_access");
-    if (!token && token_ofi) {
-      redirect("/");
-    }
+  
  const { trucks, isLoading, error } = useTrucks()
  
 if (isLoading) return <p className="text-white">Carregando veículos...</p>
