@@ -22,6 +22,7 @@ model User {
   createdAt   DateTime      @default(now())
 
   diagnosticos Diagnostico[]
+  statusHistory OrdemStatusHistory[]
 }
 
 model Client {
@@ -65,6 +66,7 @@ model OrdemService {
   truck                Truck       @relation(fields: [truckId], references: [id])
   orcamentos           Orcamento[] 
   diagnostico          Diagnostico[]
+  statusHistory        OrdemStatusHistory[]
 }
 model Diagnostico {
   id                    String              @id @default(uuid())
@@ -126,6 +128,8 @@ enum Status {
   EM_COTACAO
   COTACAO_CONCLUIDA
   AGUARDANDO_APROVACAO
+  AGUARDANDO_APROVACAO_DIAGNOSTICO
+  AGUARDANDO_APROVACAO_ORCAMENTO
   APROVADO
   REJEITADO
   AGUARDANDO_PECAS
@@ -216,4 +220,15 @@ enum CategoriaDiagnostico {
   VAZAMENTO_GERAL
   REVISAO_PREVENTIVA
   OUTROS
+}
+model OrdemStatusHistory {
+  id        String   @id @default(uuid())
+  status    Status
+  createdAt DateTime @default(now())
+
+  ordemId   String
+  userId    String
+
+  ordem     OrdemService @relation(fields: [ordemId], references: [id], onDelete: Cascade)
+  user      User         @relation(fields: [userId], references: [id])
 }
