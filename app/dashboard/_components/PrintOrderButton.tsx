@@ -7,46 +7,51 @@ interface PrintOrderButtonProps {
   order: any;
 }
 const PrintTemplate = ({ order }: { order: any }) => (
-  <div id="print-area" className="hidden print:block p-12 bg-white text-black min-h-screen font-sans">
+  /* Removemos a classe 'hidden' do Tailwind e deixamos o controle para o ID e o CSS Media Print */
+  <div 
+    id="print-area" 
+    className="print:block hidden p-10 bg-white text-black min-h-screen w-full"
+    style={{ fontFamily: 'sans-serif' }}
+  >
     {/* CABEÇALHO */}
-    <div className="flex justify-between items-start border-b-4 border-black pb-6 mb-8">
+    <div className="flex justify-between items-start border-b-[3px] border-black pb-6 mb-8">
       <div>
-        <h1 className="text-4xl font-black uppercase italic tracking-tighter leading-none">
+        <h1 className="text-4xl font-black uppercase italic tracking-tighter leading-none text-black">
           Voldorico <span className="text-gray-400 font-light">ALM</span>
         </h1>
-        <p className="text-[10px] uppercase tracking-[0.3em] font-bold mt-1 text-gray-600">
+        <p className="text-[10px] uppercase tracking-[0.3em] font-bold mt-2 text-gray-500">
           Engenharia de Sistemas Diesel & Pesados
         </p>
       </div>
       <div className="text-right">
-        <p className="text-sm font-bold uppercase tracking-widest">Ordem de Serviço</p>
-        <p className="text-2xl font-mono font-black italic">#{order.num_os || "N/A"}</p>
-        <p className="text-[10px] text-gray-500 font-bold uppercase">Entrada: {new Date(order.date_input).toLocaleDateString()}</p>
+        <p className="text-sm font-bold uppercase tracking-widest text-black">Ordem de Serviço</p>
+        <p className="text-2xl font-mono font-black italic text-black">#{order.num_os || "N/A"}</p>
+        <p className="text-[10px] text-gray-400 font-bold uppercase">Entrada: {order.date_input ? new Date(order.date_input).toLocaleDateString() : '---'}</p>
       </div>
     </div>
 
-    {/* INFO CLIENTE E VEÍCULO */}
-    <div className="grid grid-cols-2 gap-8 mb-10">
-      <div className="border-l-2 border-black pl-4">
-        <h3 className="text-[9px] uppercase font-black text-gray-400 mb-2 tracking-widest">Proprietário</h3>
-        <p className="font-bold uppercase text-lg">{order.client?.name}</p>
-        <p className="text-sm">{order.client?.phone}</p>
+    {/* GRID INFO */}
+    <div className="grid grid-cols-2 gap-10 mb-10">
+      <div className="border-l-[1px] border-black/20 pl-4">
+        <h3 className="text-[9px] uppercase font-black text-gray-400 mb-2 tracking-widest">Proprietário / Cliente</h3>
+        <p className="font-bold uppercase text-lg text-black">{order.client?.name || 'Cliente não identificado'}</p>
+        <p className="text-sm text-black">{order.client?.phone || ''}</p>
       </div>
-      <div className="border-l-2 border-black pl-4">
-        <h3 className="text-[9px] uppercase font-black text-gray-400 mb-2 tracking-widest">Veículo</h3>
-        <p className="font-black text-xl italic uppercase tracking-tighter">{order.truck?.plate}</p>
-        <p className="text-sm font-bold uppercase">{order.truck?.model}</p>
+      <div className="border-l-[1px] border-black/20 pl-4">
+        <h3 className="text-[9px] uppercase font-black text-gray-400 mb-2 tracking-widest">Equipamento / Veículo</h3>
+        <p className="font-black text-xl italic uppercase tracking-tighter text-black">{order.truck?.plate || 'S/ PLACA'}</p>
+        <p className="text-sm font-bold uppercase text-black">{order.truck?.model || 'Modelo não informado'}</p>
       </div>
     </div>
 
-    {/* RELATO TÉCNICO */}
+    {/* DIAGNÓSTICO */}
     <div className="mb-10">
-      <div className="bg-gray-100 p-2 mb-4 border-l-4 border-black">
-        <h3 className="text-[10px] uppercase font-black tracking-[0.2em]">Diagnóstico de Entrada</h3>
+      <div className="bg-gray-100 p-3 mb-4 border-l-[6px] border-black">
+        <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-black">Relatório Técnico e Sintomas</h3>
       </div>
-      <div className="px-4 py-2 min-h-[120px]">
-        <p className="text-sm leading-relaxed italic uppercase font-medium">
-          {order.problem_desc_client || "Sem descrição informada."}
+      <div className="px-4 py-2 min-h-[150px] border border-gray-100 rounded-xl">
+        <p className="text-sm leading-relaxed italic uppercase font-medium text-black">
+          {order.problem_desc_client || "O cliente não forneceu descrição detalhada dos sintomas na abertura da O.S."}
         </p>
       </div>
     </div>
@@ -54,48 +59,52 @@ const PrintTemplate = ({ order }: { order: any }) => (
     {/* TABELA DE VALORES */}
     <div className="mb-12">
       <div className="bg-gray-100 p-2 mb-2">
-        <h3 className="text-[10px] uppercase font-black tracking-[0.2em]">Estimativa de Custos</h3>
+        <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-black">Estimativa de Investimento</h3>
       </div>
-      <table className="w-full text-left border-collapse">
+      <table className="w-full text-left">
         <thead>
           <tr className="border-b-2 border-black">
-            <th className="py-2 text-[10px] uppercase font-bold">Item / Serviço</th>
-            <th className="py-2 text-[10px] uppercase font-bold text-right">Subtotal</th>
+            <th className="py-3 text-[10px] uppercase font-bold text-black">Especificação do Serviço / Peças</th>
+            <th className="py-3 text-[10px] uppercase font-bold text-right text-black">Subtotal</th>
           </tr>
         </thead>
-        <tbody className="text-sm">
+        <tbody>
+          {/* Se houver orçamentos cadastrados */}
           {order.orcamentos?.[0]?.items?.map((item: any, i: number) => (
             <tr key={i} className="border-b border-gray-100">
-              <td className="py-3 uppercase font-medium">{item.description}</td>
-              <td className="py-3 text-right font-mono">R$ {item.price}</td>
+              <td className="py-3 uppercase text-sm font-medium text-black">{item.description}</td>
+              <td className="py-3 text-right font-mono text-black">R$ {item.price}</td>
             </tr>
           )) || (
             <tr className="border-b border-gray-100">
-              <td className="py-3 uppercase text-gray-400 italic">Aguardando Aprovação de Peças</td>
-              <td className="py-3 text-right font-mono">---</td>
+              <td className="py-6 uppercase text-gray-400 italic text-xs">Análise técnica em andamento. Valores sujeitos a alteração após desmontagem.</td>
+              <td className="py-6 text-right font-mono text-gray-400">---</td>
             </tr>
           )}
-          <tr className="border-t-2 border-black">
-            <td className="py-4 font-black uppercase tracking-widest text-lg">Total Geral</td>
-            <td className="py-4 text-right font-black text-2xl italic font-mono">
-               {order.budget ? `R$ ${order.budget}` : '---'}
+          <tr>
+            <td className="py-6 font-black uppercase tracking-widest text-lg text-black">Total Geral Estimado</td>
+            <td className="py-6 text-right font-black text-2xl italic font-mono text-black">
+               {order.budget ? `R$ ${order.budget}` : 'Consulte o Técnico'}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    {/* RODAPÉ E ASSINATURA */}
-    <div className="mt-20 grid grid-cols-2 gap-20">
-      <div className="border-t border-black text-center pt-2">
-        <p className="text-[8px] font-bold uppercase tracking-widest">Voldorico ALM Diesel</p>
+    {/* ASSINATURAS NO FINAL DA PÁGINA */}
+    <div className="mt-auto pt-20 grid grid-cols-2 gap-20">
+      <div className="border-t-[1px] border-black text-center pt-3">
+        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-black">Voldorico ALM Diesel</p>
+        <p className="text-[8px] text-gray-400 mt-1 uppercase">Responsável Técnico</p>
       </div>
-      <div className="border-t border-black text-center pt-2">
-        <p className="text-[8px] font-bold uppercase tracking-widest">Assinatura do Cliente</p>
+      <div className="border-t-[1px] border-black text-center pt-3">
+        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-black">Aprovação do Cliente</p>
+        <p className="text-[8px] text-gray-400 mt-1 uppercase">Assinatura / Data</p>
       </div>
     </div>
   </div>
 );
+
 export default function PrintOrderButton({ order }: PrintOrderButtonProps) {
   const [isGenerating, setIsGenerating] = useState(false);
 
