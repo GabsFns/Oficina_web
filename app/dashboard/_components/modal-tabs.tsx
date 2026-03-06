@@ -1,9 +1,10 @@
 'use client';
-import { ReactNode, useState } from 'react';
-import { X } from 'lucide-react';
+import { ReactNode, useState, useEffect } from 'react';
+import { X, LayoutDashboard, Settings, User } from 'lucide-react';
 
 interface Tab {
   label: string;
+  icon?: ReactNode;
   content: ReactNode;
 }
 
@@ -17,39 +18,77 @@ interface ModalTabsProps {
 export default function ModalTabs({ isOpen, onClose, title, tabs }: ModalTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
 
+  // Bloquear scroll do fundo quando a modal abre
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'unset';
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-[#111] rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-white">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      {/* Backdrop com desfoque profundo */}
+      <div 
+        className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
+        onClick={onClose}
+      />
+
+      {/* Container da Modal */}
+      <div className="relative bg-[#0d0d0e] border border-white/10 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] w-full max-w-3xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        
+        {/* Glow Decorativo de Fundo */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-yellow-500/10 blur-[80px] rounded-full pointer-events-none" />
+
+        {/* Header Superior */}
+        <div className="flex justify-between items-center p-8 border-b border-white/5 bg-white/[0.01]">
+          <div>
+            <p className="text-yellow-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Detalhes do Sistema</p>
+            <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
+              {title || 'Informações'}
+            </h2>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:bg-red-500/20 hover:text-red-500 transition-all border border-white/5"
+          >
             <X size={20} />
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-4 border-b border-gray-700">
-          {tabs.map((tab, index) => (
-            <button
-              key={index}
-              className={`px-4 py-2 font-semibold rounded-t-lg ${
-                activeTab === index
-                  ? 'bg-yellow-500 text-black'
-                  : 'bg-[#222] text-gray-400 hover:bg-gray-800'
-              }`}
-              onClick={() => setActiveTab(index)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="flex flex-col md:flex-row min-h-[400px]">
+          {/* Menu Lateral de Abas (Navegação) */}
+          <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-4 bg-black/20">
+            <div className="flex md:flex-col gap-2">
+              {tabs.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveTab(index)}
+                  className={`
+                    flex items-center gap-3 px-5 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all
+                    ${activeTab === index 
+                      ? 'bg-yellow-500 text-black shadow-[0_10px_20px_rgba(234,179,8,0.2)] scale-[1.02]' 
+                      : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'
+                    }
+                  `}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Área de Conteúdo */}
+          <div className="flex-1 p-8 bg-gradient-to-br from-transparent to-white/[0.02] max-h-[500px] overflow-y-auto custom-scrollbar">
+            <div className="animate-in slide-in-from-right-4 duration-500">
+              {tabs[activeTab]?.content}
+            </div>
+          </div>
         </div>
 
-        {/* Conteúdo ativo */}
-        <div className="text-gray-300">
-          {tabs[activeTab]?.content}
+        {/* Footer da Modal */}
+        <div className="p-4 border-t border-white/5 bg-black/40 flex justify-center">
+          <p className="text-[9px] text-gray-600 font-bold uppercase tracking-[0.4em]">Voldorico ALM Diesel • Terminal de Diagnóstico</p>
         </div>
       </div>
     </div>

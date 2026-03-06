@@ -147,7 +147,7 @@ const getStatusStyle = (status: string) => {
 
                   {/* AÇÕES */}
                   <td className="px-8 py-6 text-right">
-                    <button  onClick={() => openModal(order)} className="text-gray-600 hover:text-white transition-all p-2 hover:bg-white/5 rounded-lg">
+                    <button  onClick={() => openModal(order)}className="text-gray-600 hover:text-white transition-all p-2 hover:bg-white/5 rounded-lg">
                       <MoreHorizontal size={20} />
                     </button>
                   </td>
@@ -156,45 +156,83 @@ const getStatusStyle = (status: string) => {
             </tbody>    
           </table>
         </div>
- {/* Modal de O.S. com abas */}
-      {selectedOrder && (
-        <ModalTabs
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title={`Ordem #${selectedOrder.id}`}
-          tabs={[
-            {
-              label: 'Orçamento',
-              content: (
-                <div>
-                  <p>Valor estimado: {selectedOrder.budget || 'N/A'}</p>
-                  <p>Itens: {selectedOrder.budget_items?.join(', ') || 'N/A'}</p>
-                </div>
-              ),
-            },
-            {
-              label: 'Diagnóstico',
-              content: (
-                <div>
-                  <p>{selectedOrder.diagnosis || 'Sem diagnóstico ainda.'}</p>
-                  <p>Resultado: {selectedOrder.result || 'N/A'}</p>
-                </div>
-              ),
-            },
-            {
-              label: 'Dados do Cliente',
-              content: (
-                <div>
-                  <p>Nome: {selectedOrder.client?.name}</p>
-                  <p>Telefone: {selectedOrder.client?.phone}</p>
-                  <p>Placa do veículo: {selectedOrder.truck?.plate}</p>
-                  <p>Modelo: {selectedOrder.truck?.model}</p>
-                </div>
-              ),
-            },
-          ]}
-        />
-      )}
+        
+ <ModalTabs
+  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+  title={`Ordem #${selectedOrder.id}`}
+  tabs={[
+    {
+      label: 'Orçamento',
+      content: (
+        <div className="space-y-6">
+          <div className="bg-black/40 border border-white/5 p-6 rounded-3xl">
+            <p className="text-[10px] uppercase text-gray-500 font-bold mb-2">Valor Total Estimado</p>
+            <p className="text-4xl font-black text-yellow-500 font-mono italic">
+              {selectedOrder.budget ? `R$ ${selectedOrder.budget}` : 'Pendente'}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2">
+            <p className="text-[10px] uppercase text-gray-500 font-bold mb-2 ml-1">Itens de Reposição</p>
+            {selectedOrder.budget_items?.map((item: any, i: any) => (
+              <div key={i} className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5 text-sm uppercase font-medium">
+                <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                {item}
+              </div>
+            )) || <p className="text-gray-600 italic">Nenhum item listado.</p>}
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: 'Diagnóstico',
+      content: (
+        <div className="space-y-4">
+          <div className="p-6 bg-yellow-500/5 border border-yellow-500/10 rounded-3xl">
+            <h4 className="text-yellow-500 text-xs font-black uppercase mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-ping" />
+              Parecer Técnico
+            </h4>
+            <p className="text-gray-300 leading-relaxed italic uppercase font-medium text-sm">
+              "{selectedOrder.diagnosis || 'Aguardando avaliação do mecânico.'}"
+            </p>
+          </div>
+          <div className="p-4 border border-white/5 rounded-2xl flex justify-between items-center">
+             <span className="text-[10px] font-bold text-gray-500 uppercase">Resultado Final</span>
+             <span className="text-xs font-black uppercase text-white tracking-widest">{selectedOrder.result || 'Pendente'}</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: 'Dados da Máquina',
+      content: (
+        <div className="grid grid-cols-1 gap-4">
+          <div className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+            <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-yellow-500 font-black italic">
+              ALM
+            </div>
+            <div>
+              <p className="text-[10px] text-gray-500 font-bold uppercase italic tracking-tighter">Proprietário</p>
+              <p className="font-bold text-white uppercase">{selectedOrder.client?.name}</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-black/40 p-4 rounded-2xl border border-white/5">
+              <p className="text-[10px] text-gray-500 font-bold uppercase">Placa</p>
+              <p className="font-mono font-black text-yellow-500 text-lg uppercase">{selectedOrder.truck?.plate}</p>
+            </div>
+            <div className="bg-black/40 p-4 rounded-2xl border border-white/5">
+              <p className="text-[10px] text-gray-500 font-bold uppercase">Modelo</p>
+              <p className="font-bold text-white text-sm uppercase truncate">{selectedOrder.truck?.model}</p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  ]}
+/>
 
         {/* FOOTER */}
         <div className="p-6 border-t border-white/5 bg-white/[0.01] flex justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
