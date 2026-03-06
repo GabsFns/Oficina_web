@@ -32,7 +32,7 @@ export default function LandingPage() {
         <div className="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
           <a href="#servicos" className="hover:text-yellow-500 transition-colors">Serviços</a>
           <a href="#contato" className="hover:text-yellow-500 transition-colors">Contato</a>
-          <a href="auth/login" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área do Cliente</a>
+          <a href="/secure" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área do Cliente</a>
         </div>
 
         {/* Mobile Toggle */}
