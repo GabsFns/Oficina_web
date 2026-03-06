@@ -1,8 +1,14 @@
 import { getClients } from "../../service/client-service";
 import { Plus, User, Phone, Settings2, Search } from "lucide-react";
 import Link from "next/link";
+import { cookies, headers } from "next/headers";
 
 export default async function ClientsPage() {
+  'use server' // força request-based
+
+  cookies();  // marca como request-bound
+  headers();  // marca como request-bound
+
   const clients = await getClients();
 
   return (
