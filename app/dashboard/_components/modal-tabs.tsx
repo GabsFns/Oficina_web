@@ -1,21 +1,25 @@
 'use client';
 import { ReactNode, useState, useEffect } from 'react';
 import { X, LayoutDashboard, Settings, User } from 'lucide-react';
-
+import PrintOrderButton from './PrintOrderButton';
 interface Tab {
   label: string;
   icon?: ReactNode;
   content: ReactNode;
 }
 
+// ... dentro da interface ModalTabsProps, adicione a prop 'order'
 interface ModalTabsProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   tabs: Tab[];
+  order: any; // Adicione isso aqui
 }
 
-export default function ModalTabs({ isOpen, onClose, title, tabs }: ModalTabsProps) {
+
+
+export default function ModalTabs({ isOpen, onClose, title, tabs, order }: ModalTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
 
   // Bloquear scroll do fundo quando a modal abre
@@ -87,9 +91,19 @@ export default function ModalTabs({ isOpen, onClose, title, tabs }: ModalTabsPro
         </div>
 
         {/* Footer da Modal */}
-        <div className="p-4 border-t border-white/5 bg-black/40 flex justify-center">
-          <p className="text-[9px] text-gray-600 font-bold uppercase tracking-[0.4em]">Voldorico ALM Diesel • Terminal de Diagnóstico</p>
-        </div>
+       <div className="p-6 border-t border-white/5 bg-black/40 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="flex flex-col">
+        <p className="text-[9px] text-gray-600 font-bold uppercase tracking-[0.4em]">
+          Voldorico ALM Diesel • Terminal de Diagnóstico
+        </p>
+        <p className="text-[7px] text-gray-700 uppercase tracking-widest">
+          Sincronizado com Banco de Dados Central
+        </p>
+      </div>
+      
+      {/* O Botão de Impressão */}
+    <PrintOrderButton order={order ?? null} />
+    </div>
       </div>
     </div>
   );

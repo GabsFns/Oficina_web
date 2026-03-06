@@ -162,6 +162,7 @@ const getStatusStyle = (status: string) => {
     isOpen={isModalOpen}
     onClose={() => setIsModalOpen(false)}
     title={`Ordem #${selectedOrder.id ?? '---'}`}
+    order={selectedOrder}
     tabs={[
       {
         label: 'Orçamento',
