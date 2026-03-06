@@ -1,11 +1,18 @@
+'use client'
 import { getOrders } from "../../service/order-service"; // Supondo que seu service siga este padrão
 import { Plus, ClipboardList, Search, Clock, CheckCircle2, AlertCircle, Wrench, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
+import useSWR from 'swr'
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default async function OrdersPage() {
-  const orders = await getOrders();
+  
 
-  // Função para definir a cor do badge com base no status
+  const { data: orders, isLoading, error } = useSWR('/api/orders', fetcher, { refreshInterval: 10000 });
+
+  if (isLoading) return <div>Carregando ordens...</div>
+  if (error) return <div>Erro ao carregar ordens</div>
+  // Função para definir a cor do badge com base no staatus
 const statusStyles: Record<string, string> = {
   ABERTA: "bg-gray-500/10 text-gray-400 border-gray-500/20",
 
@@ -88,7 +95,7 @@ const getStatusStyle = (status: string) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {orders.map((order) => (
+              {orders.map((order: any) => (
                 <tr key={order.id} className="hover:bg-white/[0.02] transition-colors group">
                   
                   {/* NÚMERO E DATA */}

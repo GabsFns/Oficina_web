@@ -38,3 +38,20 @@ export async function POST(req: Request) {
     );
   }
 }
+
+
+export async function GET() {
+  const orders = await prisma.ordemService.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      client: true,
+      truck: true,
+      orcamentos: true,
+      diagnostico: true,
+      statusHistory: { orderBy: { createdAt: "asc" } },
+    },
+  });
+
+  return NextResponse.json(orders);
+}// src/app/api/orders/route.ts
+
