@@ -4,7 +4,7 @@ import { LayoutDashboard, Users, Truck, Settings, LogOut, ListOrdered } from "lu
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
-
+ import toast from "react-hot-toast";
 interface User {
   name: string;
   email: string;
@@ -68,19 +68,56 @@ export default function Sidebar({ user }: { user: User }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  async function handleLogout() {
-    try {
-      const res = await fetch("/api/auth/logout", { method: "POST" });
 
-      if (res.ok) {
-        router.push("/auth/login");
-      } else {
-        alert("Erro ao sair da conta");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
+
+async function handleLogout() {
+  const toastId = toast.custom((t) => (
+    <div
+      className={`bg-white shadow-lg rounded-lg p-4 border flex flex-col gap-3 ${
+        t.visible ? "animate-enter" : "animate-leave"
+      }`}
+    >
+      <p className="font-semibold">Deseja sair da conta?</p>
+      <p className="text-sm text-gray-500">
+        Você precisará fazer login novamente.
+      </p>
+
+      <div className="flex gap-2 justify-end">
+        <button
+          className="px-3 py-1 text-sm bg-gray-200 rounded"
+          onClick={() => toast.dismiss(t.id)}
+        >
+          Cancelar
+        </button>
+
+        <button
+          className="px-3 py-1 text-sm bg-red-500 text-white rounded"
+          onClick={async () => {
+            toast.dismiss(t.id);
+
+            const promise = fetch("/api/auth/logout", {
+              method: "POST",
+            });
+
+            toast.promise(promise, {
+              loading: "Saindo da conta...",
+              success: () => {
+                router.replace("/auth/login");
+                router.refresh();
+                return "Logout realizado";
+              },
+              error: "Erro ao sair da conta",
+            });
+          }}
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+  ));
+
+  return toastId;
+}
 
   return (
     <aside className="w-64 bg-[#121214] border-r border-white/5 flex flex-col p-6">

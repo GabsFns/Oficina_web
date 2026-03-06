@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Menu, X, ArrowRight, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import  WhatsButton  from "./components/ui/bttZap"
-
+ 
 // Configuração de animação que REPETE ao subir e descer a página
 const motionProps = {
   initial: { opacity: 0, y: 30 },
@@ -13,6 +13,9 @@ const motionProps = {
 };
 
 export default function LandingPage() {
+
+
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
