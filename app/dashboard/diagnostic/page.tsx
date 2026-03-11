@@ -81,8 +81,71 @@ export default function DiagnosticsPage() {
           </div>
         </div>
       )
-    }
-  ] : [];
+    },
+    {
+    label: "Galeria Técnica",
+    icon: <Camera size={16} />,
+    content: (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between border-b border-white/5 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-4 bg-yellow-500 rounded-full" />
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white">Evidências Visuais</h4>
+          </div>
+          <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">
+            {selectedDiag.fotos?.length || 0} Arquivos capturados
+          </span>
+        </div>
+
+        {/* Grid de Fotos Estilizado */}
+        <div className="grid grid-cols-2 gap-4">
+          {selectedDiag.fotos?.length > 0 ? (
+            selectedDiag.fotos.map((foto: any, index: number) => (
+              <div 
+                key={index} 
+                className="group relative aspect-video rounded-2xl overflow-hidden border border-white/5 bg-black"
+              >
+                {/* Overlay de Scanline (Efeito Estético) */}
+                <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] z-10 bg-[length:100%_2px,3px_100%]" />
+                
+                {/* Imagem (Substituir o div abaixo pela tag <img /> quando tiver as URLs reais) */}
+                <div className="absolute inset-0 flex items-center justify-center bg-white/5 group-hover:scale-110 transition-transform duration-700 ease-in-out">
+                   <Camera className="text-white/10" size={32} />
+                   {/* <img src={foto.url} className="w-full h-full object-cover" /> */}
+                </div>
+
+                {/* Badge de Identificação na Imagem */}
+                <div className="absolute bottom-3 left-3 z-20">
+                  <span className="bg-black/80 backdrop-blur-md text-[8px] text-yellow-500 font-black px-2 py-1 rounded-md border border-yellow-500/20 uppercase tracking-tighter">
+                    REG_INT_{index + 1}
+                  </span>
+                </div>
+
+                {/* Efeito de Glow no Hover */}
+                <div className="absolute inset-0 bg-yellow-500/0 group-hover:bg-yellow-500/5 transition-colors duration-300" />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-2 py-12 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-[2rem]">
+               <Camera size={40} className="text-gray-800 mb-4" />
+               <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 italic">
+                 Nenhuma evidência fotográfica anexada
+               </p>
+            </div>
+          )}
+        </div>
+
+        {/* Nota Técnica */}
+        <div className="p-4 bg-yellow-500/5 border border-yellow-500/10 rounded-xl">
+          <p className="text-[9px] text-yellow-500/70 font-bold uppercase leading-relaxed tracking-wide">
+            <span className="text-yellow-500 font-black mr-2">AVISO:</span> 
+            As imagens acima são de uso exclusivo para perícia técnica e aprovação de orçamento.
+          </p>
+        </div>
+      </div>
+    )
+  }
+] : [];
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8">
