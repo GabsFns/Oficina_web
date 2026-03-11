@@ -22,11 +22,11 @@ export default function NewOrderService() {
   id: string
   name: string
 }
-
 type Truck = {
   id: string
   plate: string
   model: string
+  clientId: string
 }
 
   // Estados dos dados
@@ -42,6 +42,9 @@ const [clients, setClients] = useState<Client[]>([])
 const [trucks, setTrucks] = useState<Truck[]>([])
   const [loading, setLoading] = useState(false);
 
+  const trucksFromClient = trucks.filter(
+  (truck) => truck.clientId === clientId
+);
   useEffect(() => {
     // Carregar Clientes e Caminhões simultaneamente
     Promise.all([
@@ -157,12 +160,17 @@ const [trucks, setTrucks] = useState<Truck[]>([])
                 required
                 className="w-full bg-[#121214] border border-white/5 rounded-xl px-4 py-4 outline-none focus:border-yellow-500 transition-all text-sm appearance-none"
                 value={truckId}
-                onChange={(e) => setTruckId(e.target.value)}
+               onChange={(e) => {
+  setClientId(e.target.value)
+  setTruckId("")
+}}
               >
                 <option value="">Selecione o veículo pela placa</option>
-                {trucks.map((t) => (
-                  <option key={t.id} value={t.id}>{t.plate} - {t.model}</option>
-                ))}
+               {trucksFromClient.map((t:any) => (
+      <option key={t.id} value={t.id}>
+        {t.plate} - {t.model}
+      </option>
+    ))}
               </select>
             </div>
 
