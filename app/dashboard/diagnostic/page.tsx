@@ -148,7 +148,7 @@ export default function DiagnosticsPage() {
 ] : [];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-8">
+    <div className="min-h-screen text-white p-8">
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
         <div>

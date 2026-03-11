@@ -59,7 +59,7 @@ const menuItems = [
     icon: <ListOrdered size={20} />,
   },
     {
-    href: "/dashboard/dignostic",
+    href: "/dashboard/diagnostic",
     label: "Diagnosticos",
     icon: <Wrench size={20} />,
   },
