@@ -70,7 +70,7 @@ const menuItems = [
   },
       {
     href: "/dashboard/financer",
-    label: "Orçamentos",
+    label: "Financeiro",
     icon: <ChartColumnBig size={20} />,
   },
   {
