@@ -25,6 +25,7 @@
     "react-hot-toast": "^2.6.0",
     "react-input-mask": "^2.0.4",
     "react-number-format": "^5.4.4",
+    "recharts": "^3.8.0",
     "swr": "^2.4.1"
   },
   "devDependencies": {
