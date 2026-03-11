@@ -17,7 +17,7 @@ useEffect(() => {
       });
   }, []);
 
-  if (loading) return <p>Carregando clientes...</p>;
+ 
 
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-white p-6 md:p-10 font-sans">
