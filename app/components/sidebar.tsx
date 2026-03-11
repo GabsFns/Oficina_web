@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, Truck, Settings, LogOut, ListOrdered, AlertTriangle} from "lucide-react";
+import { LayoutDashboard, Users, Truck, Settings, LogOut, CircleDollarSign, Wrench, ListOrdered, AlertTriangle} from "lucide-react";
 import { refresh } from "next/cache";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -57,6 +57,16 @@ const menuItems = [
     href: "/dashboard/orders",
     label: "Serviços",
     icon: <ListOrdered size={20} />,
+  },
+    {
+    href: "/dashboard/dignostic",
+    label: "Diagnosticos",
+    icon: <Wrench size={20} />,
+  },
+    {
+    href: "/dashboard/budget",
+    label: "Orçamentos",
+    icon: <CircleDollarSign size={20} />,
   },
   {
     href: "/dashboard/settings",
