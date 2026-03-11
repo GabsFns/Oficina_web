@@ -6,6 +6,8 @@ import {
   ArrowRight, 
   Factory, 
   Clock,
+  Box,
+  X,
   Layers,
   ExternalLink,
   Search,
@@ -71,6 +73,110 @@ const groupedBudgetsMock = [
     ]
   }
 ];
+// --- COMPONENTE: SIDEBAR DE DETALHES ---
+function BudgetSidebar({ budget, onClose }: { budget: any, onClose: () => void }) {
+  if (!budget) return null;
+
+  const total = budget.items.reduce((acc: number, item: any) => acc + (item.valor_unitario * item.quantidade), 0);
+
+  return (
+    <div className="fixed inset-y-0 right-0 w-full md:w-[600px] bg-[#0a0a0b] border-l border-white/10 z-50 shadow-[20px_0_60px_rgba(0,0,0,1)] flex flex-col animate-in slide-in-from-right duration-500">
+      {/* HEADER SIDEBAR */}
+      <div className="p-8 border-b border-white/5 bg-black/40 flex justify-between items-center">
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+             <span className="text-yellow-500 font-black text-[10px] tracking-widest uppercase italic">Detalhamento Técnico</span>
+             <span className="text-gray-600 text-[10px] font-bold">ID: {budget.id}</span>
+          </div>
+          <h2 className="text-3xl font-black italic uppercase tracking-tighter italic">OS #{budget.num_os}</h2>
+        </div>
+        <button onClick={onClose} className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all">
+          <X size={24} />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-8 space-y-12 custom-scrollbar">
+        {/* SEÇÃO: CLIENTE E VEÍCULO */}
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+             <div className="flex items-center gap-2 text-gray-500">
+                <User size={14} />
+                <span className="text-[9px] font-black uppercase tracking-widest">Dossiê do Cliente</span>
+             </div>
+             <div>
+                <p className="text-lg font-black text-white uppercase">{budget.cliente.name}</p>
+                <div className="flex flex-col text-[10px] text-gray-600 font-bold mt-1">
+                   <span>{budget.cliente.phone}</span>
+                   <span>{budget.cliente.email}</span>
+                </div>
+             </div>
+          </div>
+          <div className="space-y-4 border-l border-white/5 pl-8">
+             <div className="flex items-center gap-2 text-gray-500">
+                <Truck size={14} />
+                <span className="text-[9px] font-black uppercase tracking-widest">Informação Técnica</span>
+             </div>
+             <div>
+                <p className="text-lg font-black text-yellow-500 uppercase">{budget.truck.plate}</p>
+                <p className="text-[10px] text-gray-500 font-black uppercase">{budget.truck.model} ({budget.truck.ano})</p>
+                <span className="text-[8px] bg-white/5 px-2 py-0.5 rounded text-gray-400 mt-2 inline-block italic font-bold">MOTOR: {budget.truck.motor}</span>
+             </div>
+          </div>
+        </div>
+
+        {/* LISTA DE PEÇAS */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="flex items-center gap-2">
+               <Box size={14} className="text-yellow-500" />
+               <span className="text-[9px] font-black uppercase tracking-widest text-white">Componentes em Orçamento</span>
+            </div>
+            <span className="text-[10px] text-gray-600 font-bold">{budget.items.length} Itens</span>
+          </div>
+
+          <div className="space-y-4">
+            {budget.items.map((item: any, idx: number) => (
+              <div key={idx} className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.04] transition-all group">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex flex-col">
+                    <span className="text-yellow-500 font-mono text-[11px] font-bold">{item.codigo_peca}</span>
+                    <span className="text-sm font-black text-white uppercase tracking-tight mt-1">{item.peca}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[9px] text-gray-600 font-black uppercase">QTD: {item.quantidade}</span>
+                    <p className="text-sm font-mono font-black text-white italic">R$ {(item.valor_unitario * item.quantidade).toFixed(2)}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                   <div className="flex items-center gap-3">
+                      <Factory size={12} className="text-gray-700" />
+                      <span className="text-[9px] font-bold text-gray-500 uppercase">{item.fornecedor}</span>
+                   </div>
+                   <div className={`text-[8px] font-black uppercase tracking-[0.2em] ${item.status === 'APROVADO' ? 'text-green-500' : 'text-yellow-500'}`}>
+                      {item.status}
+                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      
+      {/* FOOTER SIDEBAR (AÇÕES) */}
+      <div className="p-8 bg-black/60 border-t border-white/10 space-y-4">
+         <div className="flex justify-between items-end mb-4">
+            <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Total Líquido</span>
+            <span className="text-4xl font-mono font-black italic text-yellow-500 tracking-tighter">R$ {total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+         </div>
+         <div className="grid grid-cols-2 gap-4">
+            <button className="py-4 rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/5 transition-all">Imprimir Laudo</button>
+            <button className="py-4 rounded-2xl bg-yellow-500 text-black text-[10px] font-black uppercase tracking-widest hover:bg-yellow-400 transition-all shadow-[0_10px_30px_rgba(234,179,8,0.2)]">Aprovar Completo</button>
+         </div>
+      </div>
+    </div>
+  );
+}
 
 // --- SUB-COMPONENTE: BADGE DE STATUS ---
 function StatusBadge({ status }: { status: string }) {
@@ -91,7 +197,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function BudgetManagementPage() {
   const [searchTerm, setSearchTerm] = useState("");
-
+const [selectedBudget, setSelectedBudget] = useState<any>(null);
   // Filtro por Placa ou Número da OS
   const filteredOrçamentos = useMemo(() => {
     return groupedBudgetsMock.filter(orc => 
@@ -179,9 +285,11 @@ export default function BudgetManagementPage() {
                     </p>
                   </div>
                   
-                  <button className="flex items-center gap-2 bg-white/5 hover:bg-yellow-500 hover:text-black px-6 py-4 rounded-2xl transition-all group/btn font-black text-[10px] uppercase tracking-widest">
-                    Ver Detalhes 
-                    <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+ <button 
+                    onClick={() => setSelectedBudget(orc)}
+                    className="p-5 rounded-[2rem] bg-white/5 hover:bg-yellow-500 hover:text-black transition-all group/btn"
+                  >
+                    <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform" />
                   </button>
                 </div>
 
@@ -195,6 +303,12 @@ export default function BudgetManagementPage() {
           </div>
         )}
       </div>
+
+      <BudgetSidebar 
+        budget={selectedBudget} 
+        onClose={() => setSelectedBudget(null)} 
+      />
+
 
       {/* FOOTER: APOIO AO CATALOGO */}
       <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
