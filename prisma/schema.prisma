@@ -14,15 +14,14 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  name        String
-  email       String        @unique
-  password    String
-  role        Roles?
-  createdAt   DateTime      @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Roles?
+  createdAt DateTime @default(now())
 
   diagnosticos Diagnostico[]
-  
 }
 
 model Client {
@@ -32,9 +31,9 @@ model Client {
   email     String?
   createdAt DateTime @default(now())
 
-  trucks    Truck[]
-  ordens    OrdemService[]
-  
+  trucks Truck[]
+  ordens OrdemService[]
+  orders Order[]
 }
 
 model Truck {
@@ -47,71 +46,71 @@ model Truck {
   clientId  String
   createdAt DateTime @default(now())
 
-  client    Client   @relation(fields: [clientId], references: [id])
-  ordens    OrdemService[]
+  client Client         @relation(fields: [clientId], references: [id])
+  ordens OrdemService[]
 }
 
 model OrdemService {
-  id                   String      @id @default(uuid())
-  num_os               String      @unique
-  status               Status
-  problem_desc_client  String
-  date_input           DateTime
-  date_output          DateTime?
-  createdAt            DateTime    @default(now())
+  id                  String    @id @default(uuid())
+  num_os              String    @unique
+  status              Status
+  problem_desc_client String
+  date_input          DateTime
+  date_output         DateTime?
+  createdAt           DateTime  @default(now())
 
-  clientId             String
-  truckId              String
+  clientId String
+  truckId  String
 
-  client               Client      @relation(fields: [clientId], references: [id])
-  truck                Truck       @relation(fields: [truckId], references: [id])
-  orcamentos           Orcamento[] 
-  diagnostico          Diagnostico[]
-  statusHistory        OrdemStatusHistory[]
+  client        Client               @relation(fields: [clientId], references: [id])
+  truck         Truck                @relation(fields: [truckId], references: [id])
+  orcamentos    Orcamento[]
+  diagnostico   Diagnostico[]
+  statusHistory OrdemStatusHistory[]
 }
+
 model Diagnostico {
-  id                    String              @id @default(uuid())
-  problem_desc_fun      String
-  category              CategoriaDiagnostico
-  prazo_estimado        DateTime
-  createdAt             DateTime            @default(now())
+  id               String               @id @default(uuid())
+  problem_desc_fun String
+  category         CategoriaDiagnostico
+  prazo_estimado   DateTime
+  createdAt        DateTime             @default(now())
 
-  ordemServiceId        String
-  userId                String
+  ordemServiceId String
+  userId         String
 
-  ordemService          OrdemService        @relation(fields: [ordemServiceId], references: [id])
-  user                  User                @relation(fields: [userId], references: [id])
-  
-  fotos                 DiagnosticoFoto[]
+  ordemService OrdemService @relation(fields: [ordemServiceId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  fotos DiagnosticoFoto[]
 }
 
 model DiagnosticoFoto {
-  id              String        @id @default(uuid())
-  imageUrl        String        
-  descricao       String?
-  createdAt       DateTime      @default(now())
+  id        String   @id @default(uuid())
+  imageUrl  String
+  descricao String?
+  createdAt DateTime @default(now())
 
-  diagnosticoId   String
-  diagnostico     Diagnostico   @relation(fields: [diagnosticoId], references: [id], onDelete: Cascade)
+  diagnosticoId String
+  diagnostico   Diagnostico @relation(fields: [diagnosticoId], references: [id], onDelete: Cascade)
 }
 
 model Orcamento {
-  id              String        @id @default(uuid())
-  num_os          String        // número da OS vinculada
-  codigo_peca     String
-  peca            String
-  marca_modelo    String
-  valor_unitario  Float
-  quantidade      Int
-  valor_total     Float
-  fornecedor      String
-  prazo_entrega   DateTime
-  status          Status
-  createdAt       DateTime      @default(now())
+  id             String   @id @default(uuid())
+  num_os         String // número da OS vinculada
+  codigo_peca    String
+  peca           String
+  marca_modelo   String
+  valor_unitario Float
+  quantidade     Int
+  valor_total    Float
+  fornecedor     String
+  prazo_entrega  DateTime
+  status         Status
+  createdAt      DateTime @default(now())
 
-
-  ordemServiceId  String
-  ordemService    OrdemService  @relation(fields: [ordemServiceId], references: [id], onDelete: Cascade)
+  ordemServiceId String
+  ordemService   OrdemService @relation(fields: [ordemServiceId], references: [id], onDelete: Cascade)
 }
 
 enum Roles {
@@ -222,13 +221,98 @@ enum CategoriaDiagnostico {
   REVISAO_PREVENTIVA
   OUTROS
 }
+
 model OrdemStatusHistory {
   id        String   @id @default(uuid())
   status    Status
   createdAt DateTime @default(now())
 
-  ordemId   String
- 
+  ordemId String
 
-  ordem     OrdemService @relation(fields: [ordemId], references: [id], onDelete: Cascade)
+  ordem OrdemService @relation(fields: [ordemId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  sku         String?  @unique
+  price       Float
+  cost        Float? // custo interno
+  stock       Int
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  images        ProductImage[]
+  items         OrderItem[]
+  stockMovement StockMovement[]
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  alt       String?
+  createdAt DateTime @default(now())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  products Product[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  total     Float
+  status    StatusOrder
+  createdAt DateTime    @default(now())
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  quantity Int
+  price    Float // preço no momento da compra
+
+  productId String
+  orderId   String
+
+  product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model StockMovement {
+  id        String    @id @default(uuid())
+  type      StockType
+  quantity  Int
+  createdAt DateTime  @default(now())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum StockType {
+  ENTRADA
+  SAIDA
+}
+
+enum StatusOrder {
+  PENDENTE
+  PAGO
+  CANCELADO
+  ENVIADO
+  ENTREGUE
 }
