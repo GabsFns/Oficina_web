@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cache } from "react";
-import { getUser } from "./auth-service";
+import { getUser } from "./auth.service";
 import { cookies } from "next/headers";
 
 export const getDashboardData = cache(async () => {

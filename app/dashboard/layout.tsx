@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from "react";
 import Sidebar from "../components/sidebar";
 import Header from "../components/header";
-import { getDashboardData } from "../service/dashboard-service";
+import { getDashboardData } from "../service/dashboard.service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";

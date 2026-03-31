@@ -31,7 +31,7 @@ export default function FinancialAnalyticsPage() {
   const [timeRange, setTimeRange] = useState("Mensal");
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-8 font-sans selection:bg-yellow-500/30">
+    <div className="min-h-screen bg-[#121214] text-white p-8 font-sans selection:bg-yellow-500/30">
       
       {/* HEADER TÁTICO */}
       <header className="flex flex-col xl:flex-row justify-between items-start xl:items-end mb-12 gap-8 border-b border-white/5 pb-10">

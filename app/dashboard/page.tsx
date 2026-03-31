@@ -1,4 +1,4 @@
-import { getDashboardData } from "../service/dashboard-service";
+import { getDashboardData } from "../service/dashboard.service";
 
 import StatsCards from "./_components/stats-cards";
 import ClientsList from "./_components/clients-list";
