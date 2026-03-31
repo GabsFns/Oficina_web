@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Menu, X, ArrowRight, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import  WhatsButton  from "./components/ui/bttZap"
+import Link from "next/link";
  
 // Configuração de animação que REPETE ao subir e descer a página
 const motionProps = {
@@ -32,11 +33,16 @@ export default function LandingPage() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-          <a href="#servicos" className="hover:text-yellow-500 transition-colors">Serviços</a>
-          <a href="#contato" className="hover:text-yellow-500 transition-colors">Contato</a>
-          <a href="/secure" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área</a>
-        </div>
+       
+  
+<div className="hidden md:flex items-center text-center gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+  <Link href="/store">
+    <p className="bg-yellow-500 text-black font-black uppercase italic px-10 py-2 rounded-full hover:scale-105 transition-transform">Loja</p>
+  </Link>
+  <a href="#servicos" className="hover:text-yellow-500 transition-colors">Serviços</a>
+  <a href="#contato" className="hover:text-yellow-500 transition-colors">Contato</a>
+  <a href="/secure" className="text-white border-l border-white/10 pl-8 hover:text-yellow-500">Área</a>
+</div>
 
         {/* Mobile Toggle */}
         <button className="md:hidden text-yellow-500" onClick={() => setIsMenuOpen(!isMenuOpen)}>

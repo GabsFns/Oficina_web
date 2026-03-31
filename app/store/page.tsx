@@ -3,60 +3,58 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Search, 
-  ShoppingBag, 
-  Filter, 
-  X, 
-  Plus, 
-  Minus, 
-  ArrowRight, 
-  ChevronDown,
-  Box,
-  Cpu,
-  Zap
+  Search, ShoppingBag, Filter, X, Plus, Minus, 
+  ArrowRight, ChevronRight, Star, Truck, ShieldCheck, CreditCard 
 } from "lucide-react";
 
-// --- MOCK DE PRODUTOS ---
+import Link from "next/link";
+
 const products = [
-  { id: 1, name: "Injetor Bosch Common Rail", category: "Injeção", price: 2450.00, image: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "BOSCH" },
-  { id: 2, name: "Turbina Holset HE400VG", category: "Turbinas", price: 8900.00, image: "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "HOLSET" },
-  { id: 3, name: "Kit Embreagem Sachs 430mm", category: "Mecânica", price: 3200.00, image: "https://images.pexels.com/photos/3644913/pexels-photo-3644913.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "SACHS" },
-  { id: 4, name: "Módulo Eletrônico Volvo FH", category: "Eletrônica", price: 12500.00, image: "https://images.pexels.com/photos/2582931/pexels-photo-2582931.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "VOLVO" },
+  { id: 1, name: "Injetor Bosch Common Rail", category: "Injeção", price: 2450.00, image: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "BOSCH", rating: 5.0, reviews: 120 },
+  { id: 2, name: "Turbina Holset HE400VG", category: "Turbinas", price: 8900.00, image: "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "HOLSET", rating: 4.8, reviews: 85 },
+  { id: 3, name: "Kit Embreagem Sachs 430mm", category: "Mecânica", price: 3200.00, image: "https://images.pexels.com/photos/3644913/pexels-photo-3644913.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "SACHS", rating: 4.9, reviews: 210 },
+  { id: 4, name: "Módulo Eletrônico Volvo FH", category: "Eletrônica", price: 12500.00, image: "https://images.pexels.com/photos/2582931/pexels-photo-2582931.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "VOLVO", rating: 5.0, reviews: 45 },
 ];
 
-export default function StorePage() {
+export default function PremiumStore() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState<any[]>([]);
-  const [activeCategory, setActiveCategory] = useState("TODOS");
 
-  const addToCart = (product: any) => {
-    setCart([...cart, product]);
-    setIsCartOpen(true);
-  };
+ const addToCart = (e: React.MouseEvent, product: any) => {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  if (!product || typeof product.price === 'undefined') return;
+
+  setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+  setIsCartOpen(true);
+};
+
+  const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
 
   return (
-    <div className="bg-[#0a0a0b] text-white min-h-screen font-sans">
+    <div className="bg-[#f8f9fa] min-h-screen font-sans text-black selection:bg-yellow-500">
       
-      {/* NAVBAR DA LOJA */}
-      <nav className="fixed w-full z-50 flex justify-between items-center px-6 md:px-10 py-6 backdrop-blur-xl border-b border-white/5 bg-[#0a0a0b]/90">
-        <div className="text-xl font-black tracking-tighter uppercase italic">
-          Vodorico<span className="text-yellow-500">STORE</span>
+      {/* HEADER ESTILO NEXTGEN */}
+      <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 md:px-12 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-10">
+          <div className="text-2xl font-black tracking-tighter uppercase italic text-black">
+            Vodorico<span className="text-yellow-600">ALM</span>
+          </div>
+          <div className="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="/dashboard/l" className="hover:text-black transition-colors">Oficina</a>
+          </div>
         </div>
 
-        <div className="flex items-center gap-8">
-          <div className="hidden md:flex gap-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-            <button onClick={() => setActiveCategory("TODOS")} className={activeCategory === "TODOS" ? "text-yellow-500" : ""}>Todos</button>
-            <button onClick={() => setActiveCategory("Injeção")} className={activeCategory === "Injeção" ? "text-yellow-500" : ""}>Injeção</button>
-            <button onClick={() => setActiveCategory("Turbinas")} className={activeCategory === "Cambios" ? "text-yellow-500" : ""}>Cambios</button>
+        <div className="flex items-center gap-5">
+          <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 gap-3 border border-transparent focus-within:border-yellow-500/50 transition-all">
+            <Search size={16} className="text-gray-400" />
+            <input type="text" placeholder="Buscar peça técnica..." className="bg-transparent outline-none text-xs w-48 font-medium" />
           </div>
-          
-          <button 
-            onClick={() => setIsCartOpen(true)}
-            className="relative p-3 bg-white/5 rounded-full hover:bg-yellow-500 hover:text-black transition-all group"
-          >
-            <ShoppingBag size={20} />
+          <button onClick={() => setIsCartOpen(true)} className="relative p-2 text-black hover:scale-110 transition-transform">
+            <ShoppingBag size={24} strokeWidth={1.5} />
             {cart.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-yellow-500 text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0a0a0b]">
+              <span className="absolute top-0 right-0 bg-yellow-500 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
                 {cart.length}
               </span>
             )}
@@ -64,128 +62,174 @@ export default function StorePage() {
         </div>
       </nav>
 
-      <main className="pt-32 pb-20 px-6 md:px-10">
-        
-        {/* HEADER DE CATEGORIA */}
-        <div className="mb-12">
-          <motion.h2 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter"
-          >
-            Peças <span className="text-gray-700 italic font-light">Originais</span>
-          </motion.h2>
-          <div className="flex items-center gap-4 mt-4">
-            <div className="h-1 w-20 bg-yellow-500"></div>
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500">Performance Heavy Duty</p>
+      {/* HERO / BANNER (Inspirado na sua imagem 1) */}
+      <section className="pt-24 px-6 md:px-12">
+        <div className="relative h-[300px] md:h-[450px] w-full rounded-[3rem] overflow-hidden bg-black group">
+          <img 
+            src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=1260" 
+            className="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-1000"
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
+            <h1 className="text-white text-6xl md:text-9xl font-black uppercase italic tracking-tighter mb-4">SHOP</h1>
+            <p className="text-yellow-500 font-bold tracking-[0.5em] uppercase text-xs md:text-sm">Peças de alta performance diesel</p>
           </div>
         </div>
+      </section>
+
+      {/* MAIN CONTENT */}
+      <main className="px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        {/* FILTROS LATERAIS (Inspirado na sua imagem 1) */}
+        <aside className="hidden lg:block lg:col-span-2 space-y-10">
+          <div>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+              <Filter size={14} /> Categoria
+            </h3>
+            <ul className="space-y-4 text-sm font-bold text-gray-400">
+              <li className="text-black flex items-center justify-between cursor-pointer">
+                <span>Injeção</span> <span className="bg-gray-100 px-2 py-0.5 rounded text-[10px]">12</span>
+              </li>
+              <li className="hover:text-black transition-colors cursor-pointer">Turbinas</li>
+              <li className="hover:text-black transition-colors cursor-pointer">Câmbios</li>
+              <li className="hover:text-black transition-colors cursor-pointer">Eletrônica</li>
+            </ul>
+          </div>
+          <div className="p-6 bg-yellow-500 rounded-[2rem] text-black">
+            <h4 className="font-black uppercase italic text-sm mb-2">Suporte Técnico</h4>
+            <p className="text-[10px] font-bold leading-tight opacity-80">Dúvida na aplicação da peça? Chame nossos especialistas.</p>
+          </div>
+        </aside>
 
         {/* GRID DE PRODUTOS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
+        <div className="lg:col-span-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+          {products.map((p) => (
             <motion.div 
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              key={p.id}
+              whileHover={{ y: -10 }}
               className="group relative"
             >
-              {/* Imagem do Produto */}
-              <div className="aspect-[3/4] bg-[#121214] rounded-[2rem] overflow-hidden border border-white/5 relative mb-6">
-                <img 
-                  src={product.image} 
-                  alt={product.name}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-60 group-hover:opacity-100"
-                />
-                <div className="absolute top-6 left-6">
-                  <span className="bg-black/80 backdrop-blur-md text-white text-[9px] font-black px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest">
-                    {product.brand}
-                  </span>
-                </div>
+              {/* O Link envolve o conteúdo visual do card */}
+              
                 
-                {/* Overlay de Compra Rápida */}
-                <button 
-                  onClick={() => addToCart(product)}
-                  className="absolute bottom-6 left-6 right-6 bg-yellow-500 text-black py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 shadow-2xl"
-                >
-                  Adicionar ao Carrinho
-                </button>
-              </div>
+        {/* GRID DE PRODUTOS / EMPTY STATE */}
+<div className="lg:col-span-10 flex flex-col items-center justify-center min-h-[400px] bg-white rounded-[3rem] border border-dashed border-gray-200 p-12 text-center">
+  
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="space-y-6"
+  >
+    {/* ÍCONE TÉCNICO ANIMADO */}
+    <div className="relative inline-block">
+      <div className="absolute inset-0 bg-yellow-500/20 blur-3xl rounded-full" />
+      <Search size={64} strokeWidth={1} className="relative text-gray-300 mx-auto mb-4" />
+    </div>
 
-              {/* Info do Produto */}
-              <div className="space-y-1 px-2">
-                <p className="text-[9px] font-black text-yellow-500 uppercase tracking-widest">{product.category}</p>
-                <h3 className="text-xl font-black uppercase italic tracking-tighter leading-none group-hover:text-yellow-500 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-lg font-mono font-black text-gray-400 mt-2">
-                  R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
+    <div className="space-y-2">
+      <h2 className="text-3xl font-black uppercase italic tracking-tighter">
+        Estoque em <span className="text-yellow-600">Sincronização</span>
+      </h2>
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] max-w-xs mx-auto leading-relaxed">
+        Nossos ativos de alta performance estão sendo catalogados no banco de dados.
+      </p>
+    </div>
+
+    {/* BOTÃO DE AVISO / SUPORTE */}
+    <div className="pt-8">
+      <button className="bg-black text-white px-8 py-4 rounded-2xl font-black uppercase italic text-[10px] tracking-widest hover:bg-yellow-500 hover:text-black transition-all flex items-center gap-3 mx-auto shadow-xl shadow-black/5">
+        Me avise quando chegar <ChevronRight size={14} />
+      </button>
+    </div>
+
+    {/* LOG DE STATUS (Pequeno detalhe para o dev) */}
+    <div className="pt-12 flex items-center justify-center gap-4">
+       <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse" />
+          <span className="text-[8px] font-mono font-bold text-gray-300 uppercase">Database: Offline</span>
+       </div>
+       <div className="w-px h-3 bg-gray-100" />
+       <div className="text-[8px] font-mono font-bold text-gray-300 uppercase italic">Vodorico_v2.0_init</div>
+    </div>
+  </motion.div>
+</div>
+           
             </motion.div>
           ))}
         </div>
       </main>
 
-      {/* CARRINHO LATERAL (DRAWER) */}
+      {/* CARRINHO LATERAL PREMIUM (Inspirado na Imagem 2) */}
       <AnimatePresence>
         {isCartOpen && (
           <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]" />
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCartOpen(false)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60]"
-            />
-            <motion.div 
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 h-full w-full md:w-[450px] bg-[#0d0d0e] z-[70] p-10 border-l border-white/10 flex flex-col"
+              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed right-0 top-0 h-full w-full md:w-[480px] bg-white z-[70] flex flex-col shadow-2xl"
             >
-              <div className="flex justify-between items-center mb-12">
-                <h2 className="text-3xl font-black uppercase italic tracking-tighter">Seu <span className="text-gray-600">Pedido</span></h2>
-                <button onClick={() => setIsCartOpen(false)} className="p-2 hover:text-yellow-500 transition-colors">
-                  <X size={24} />
+              <div className="p-8 flex justify-between items-center border-b border-gray-100">
+                <div>
+                  <h2 className="text-2xl font-black uppercase italic">Meu <span className="text-gray-400">Carrinho</span></h2>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{cart.length} ITENS SELECIONADOS</p>
+                </div>
+                <button onClick={() => setIsCartOpen(false)} className="p-3 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
+                  <X size={20} />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-6 pr-2 custom-scrollbar">
-                {cart.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-gray-600 italic">
-                    <ShoppingBag size={48} className="mb-4 opacity-10" />
-                    <p className="text-sm uppercase font-black tracking-widest">Carrinho Vazio</p>
-                  </div>
-                ) : (
-                  cart.map((item, idx) => (
-                    <div key={idx} className="flex gap-5 bg-white/5 p-4 rounded-[1.5rem] border border-white/5">
-                      <div className="w-20 h-20 bg-black rounded-xl overflow-hidden shrink-0">
-                        <img src={item.image} className="w-full h-full object-cover grayscale" />
-                      </div>
-                      <div className="flex flex-col justify-center flex-1">
-                        <h4 className="text-[11px] font-black uppercase italic leading-none mb-1">{item.name}</h4>
-                        <p className="text-[10px] font-mono font-bold text-yellow-500">R$ {item.price.toLocaleString('pt-BR')}</p>
-                      </div>
-                      <button className="text-gray-700 hover:text-red-500 self-center">
-                        <X size={18} />
-                      </button>
+              <div className="flex-1 overflow-y-auto p-8 space-y-6">
+                {cart.map((item, i) => (
+                  <div key={i} className="flex gap-4 group">
+                    <div className="w-24 h-24 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100">
+                      <img src={item.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
                     </div>
-                  ))
-                )}
+                    <div className="flex-1 space-y-1">
+                      <h4 className="font-black uppercase italic text-sm">{item.name}</h4>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.brand}</p>
+                      <div className="flex justify-between items-center pt-2">
+                        <div className="flex items-center bg-gray-100 rounded-lg p-1 gap-3">
+                          <button className="p-1 hover:bg-white rounded shadow-sm"><Minus size={12} /></button>
+                          <span className="text-xs font-black px-1">1</span>
+                          <button className="p-1 hover:bg-white rounded shadow-sm"><Plus size={12} /></button>
+                        </div>
+                        <span className="font-mono font-black text-sm">R$ {item.price.toLocaleString('pt-BR')}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="mt-10 pt-10 border-t border-white/10 space-y-6">
-                <div className="flex justify-between items-end">
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Total Estimado</span>
-                  <span className="text-3xl font-mono font-black italic text-white">
-                    R$ {cart.reduce((acc, curr) => acc + curr.price, 0).toLocaleString('pt-BR')}
-                  </span>
+              {/* RODAPÉ DO CARRINHO (ESTILO CHECKOUT NEXTGEN) */}
+              <div className="p-8 bg-gray-50 space-y-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-gray-400">
+                    <span>Subtotal</span> <span className="text-black font-mono">R$ {subtotal.toLocaleString('pt-BR')}</span>
+                  </div>
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-gray-400">
+                    <span>Entrega</span> <span className="text-green-600">Calculando...</span>
+                  </div>
+                  <div className="h-px bg-gray-200 my-4" />
+                  <div className="flex justify-between items-end">
+                    <span className="font-black uppercase italic text-lg">Total</span>
+                    <span className="text-3xl font-mono font-black tracking-tighter">R$ {subtotal.toLocaleString('pt-BR')}</span>
+                  </div>
                 </div>
-                <button className="w-full bg-yellow-500 text-black py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-yellow-400 transition-all shadow-[0_10px_40px_rgba(234,179,8,0.2)] flex items-center justify-center gap-3">
-                  Finalizar Compra <ArrowRight size={18} />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col items-center gap-1">
+                    <Truck size={16} className="text-gray-400" />
+                    <span className="text-[8px] font-black uppercase text-gray-400 tracking-tighter">Envio Rápido</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col items-center gap-1">
+                    <ShieldCheck size={16} className="text-gray-400" />
+                    <span className="text-[8px] font-black uppercase text-gray-400 tracking-tighter">Garantia Vodorico</span>
+                  </div>
+                </div>
+
+                <button className="w-full bg-black text-white py-6 rounded-[2rem] font-black uppercase italic tracking-widest hover:bg-yellow-500 hover:text-black transition-all flex items-center justify-center gap-3 shadow-xl shadow-black/10 group">
+                  Finalizar Pedido <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </button>
               </div>
             </motion.div>
