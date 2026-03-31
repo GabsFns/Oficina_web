@@ -54,7 +54,7 @@ const menuItems = [
     icon: <Truck size={20} />,
   },
   {
-    href: "/dashboard/orders",
+    href: "/dashboard/order-service",
     label: "Serviços",
     icon: <ListOrdered size={20} />,
   },
@@ -73,6 +73,19 @@ const menuItems = [
     label: "Financeiro",
     icon: <ChartColumnBig size={20} />,
   },
+
+  {
+    href: "/dashboard/products",
+    label: "Financeiro",
+    icon: <ChartColumnBig size={20} />,
+  },
+  
+ {
+    href: "/dashboard/order-store",
+    label: "Financeiro",
+    icon: <ChartColumnBig size={20} />,
+  },
+
   {
     href: "/dashboard/settings",
     label: "Configurações",
@@ -80,10 +93,53 @@ const menuItems = [
   },
 ];
 
+function DropdownItem({
+  icon,
+  label,
+  children,
+  open,
+  onClick,
+}: {
+  icon: ReactNode;
+  label: string;
+  children: ReactNode;
+  open: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div>
+      <button
+        onClick={onClick}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-[#1a1a1e] hover:text-white transition-all"
+      >
+        <div className="flex items-center gap-3">
+          {icon}
+          <span className="text-sm">{label}</span>
+        </div>
+
+        <span className={`transition-transform ${open ? "rotate-90" : ""}`}>
+          ▶
+        </span>
+      </button>
+
+      {open && (
+        <div className="ml-6 mt-2 space-y-1">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function Sidebar({ user }: { user: User }) {
   const router = useRouter();
   const pathname = usePathname();
   const [logoutOpen, setLogoutOpen] = useState(false);
+const isEcommerceRoute =
+  pathname.includes("/products") || pathname.includes("/order-store");
+
+const [openEcommerce, setOpenEcommerce] = useState(isEcommerceRoute);
   async function handleLogout() {
     try {
       const res = await fetch("/api/auth/logout", { method: "POST" });
@@ -110,17 +166,39 @@ export default function Sidebar({ user }: { user: User }) {
       </div>
 
       {/* MENU */}
-      <nav className="flex-1 space-y-2">
-        {menuItems.map((item) => (
-          <NavItem
-            key={item.href}
-            href={item.href}
-            icon={item.icon}
-            label={item.label}
-            pathname={pathname}
-          />
-        ))}
-      </nav>
+    <nav className="flex-1 space-y-2">
+  {menuItems.map((item) => (
+    <NavItem
+      key={item.href}
+      href={item.href}
+      icon={item.icon}
+      label={item.label}
+      pathname={pathname}
+    />
+  ))}
+
+  {/* 🔥 DROPDOWN ECOMMERCE */}
+  <DropdownItem
+    icon={<ChartColumnBig size={20} />}
+    label="Meu Ecommerce"
+    open={openEcommerce}
+    onClick={() => setOpenEcommerce(!openEcommerce)}
+  >
+    <NavItem
+      href="/dashboard/products"
+      icon={<ListOrdered size={18} />}
+      label="Produtos"
+      pathname={pathname}
+    />
+
+    <NavItem
+      href="/dashboard/order-store"
+      icon={<ListOrdered size={18} />}
+      label="Pedidos"
+      pathname={pathname}
+    />
+  </DropdownItem>
+</nav>
 
       {/* USER */}
       <div className="mt-auto pt-6 border-t border-white/5 flex items-center gap-3">
