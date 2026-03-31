@@ -24,21 +24,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   // Mock do produto baseado na sua estética
   const product = {
-    name: "Turbina Holset HE400VG",
-    price: 8900.00,
-    brand: "Holset Original",
-    category: "Sistemas de Turboalimentação",
-    rating: 4.9,
-    reviews: 124,
-    sku: "VOD-TRB-400VG",
-    description: "Componente de alta performance com geometria variável, projetado para motores diesel pesados. Aumenta a eficiência volumétrica e reduz o consumo de combustível em regimes de carga alta.",
-    images: [
-      "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/3644913/pexels-photo-3644913.jpeg?auto=compress&cs=tinysrgb&w=800"
-    ]
-  };
-
+      name: "Câmbio Eaton FS6306B",
+      brand: "Eaton",
+      category: "Transmissão",
+      price: 18000.00,
+      sku: "TRN-EAT-FS6306B",
+      description: "Caixa de câmbio manual de 6 marchas, alta durabilidade para caminhões médios e pesados.",
+      images: [
+        "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
+      ]
+    },
+    
   return (
     <div className="min-h-screen bg-white text-black font-sans pb-20">
       
