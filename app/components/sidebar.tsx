@@ -74,17 +74,6 @@ const menuItems = [
     icon: <ChartColumnBig size={20} />,
   },
 
-  {
-    href: "/dashboard/products",
-    label: "Financeiro",
-    icon: <ChartColumnBig size={20} />,
-  },
-  
- {
-    href: "/dashboard/order-store",
-    label: "Financeiro",
-    icon: <ChartColumnBig size={20} />,
-  },
 
   {
     href: "/dashboard/settings",
@@ -167,18 +156,7 @@ const [openEcommerce, setOpenEcommerce] = useState(isEcommerceRoute);
 
       {/* MENU */}
     <nav className="flex-1 space-y-2">
-  {menuItems.map((item) => (
-    <NavItem
-      key={item.href}
-      href={item.href}
-      icon={item.icon}
-      label={item.label}
-      pathname={pathname}
-    />
-  ))}
-
-  {/* 🔥 DROPDOWN ECOMMERCE */}
-  <DropdownItem
+       <DropdownItem
     icon={<ChartColumnBig size={20} />}
     label="Meu Ecommerce"
     open={openEcommerce}
@@ -198,6 +176,18 @@ const [openEcommerce, setOpenEcommerce] = useState(isEcommerceRoute);
       pathname={pathname}
     />
   </DropdownItem>
+  {menuItems.map((item) => (
+    <NavItem
+      key={item.href}
+      href={item.href}
+      icon={item.icon}
+      label={item.label}
+      pathname={pathname}
+    />
+  ))}
+
+  {/* 🔥 DROPDOWN ECOMMERCE */}
+ 
 </nav>
 
       {/* USER */}
