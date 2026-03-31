@@ -81,7 +81,7 @@ export default function ProductsMasterPage() {
             />
           </div>
 
-          <Link href="/products/new">
+          <Link href="dashboard/products/new">
             <button className="bg-yellow-500 hover:bg-yellow-400 text-black p-4 rounded-2xl flex items-center gap-2 transition-all shadow-[0_10px_30px_rgba(234,179,8,0.2)] active:scale-95 group">
               <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
               <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Novo Item</span>
@@ -138,7 +138,7 @@ export default function ProductsMasterPage() {
                 <span className="text-[9px] font-black uppercase tracking-widest">Homologado</span>
               </div>
               
-              <Link href={`/products/${product.id}`} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors group/link">
+              <Link href={`dashboard/products/${product.id}`} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors group/link">
                 Editar Specs 
                 <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
               </Link>
@@ -147,7 +147,7 @@ export default function ProductsMasterPage() {
         ))}
 
         {/* CARD ADICIONAR (PLACEHOLDER) */}
-        <Link href="/products/new" className="border-2 border-dashed border-white/5 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 text-gray-600 hover:text-yellow-500 hover:border-yellow-500/20 hover:bg-yellow-500/[0.02] transition-all group min-h-[350px]">
+        <Link href="dashboard/products/new" className="border-2 border-dashed border-white/5 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 text-gray-600 hover:text-yellow-500 hover:border-yellow-500/20 hover:bg-yellow-500/[0.02] transition-all group min-h-[350px]">
           <div className="p-6 rounded-full bg-white/5 group-hover:bg-yellow-500/10 transition-all">
             <Plus size={40} />
           </div>
