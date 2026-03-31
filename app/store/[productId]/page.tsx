@@ -33,7 +33,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       images: [
         "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
       ]
-    },
+    }
     
   return (
     <div className="min-h-screen bg-white text-black font-sans pb-20">
