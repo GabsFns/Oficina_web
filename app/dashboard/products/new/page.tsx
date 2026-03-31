@@ -33,7 +33,7 @@ export default function NewProductPage() {
       {/* HEADER DE NAVEGAÇÃO */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
         <div className="flex items-center gap-6">
-          <Link href="/products" className="group p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500 hover:text-black transition-all">
+          <Link href="/dashboard/products" className="group p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-yellow-500 hover:text-black transition-all">
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           </Link>
           <div>
