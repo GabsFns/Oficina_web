@@ -42,7 +42,7 @@ export default function PremiumStore() {
             Vodorico<span className="text-yellow-600">ALM</span>
           </div>
           <div className="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-gray-400">
-            <a href="/dashboard/l" className="hover:text-black transition-colors">Oficina</a>
+            <a href="/" className="hover:text-black transition-colors">Oficina</a>
           </div>
         </div>
 
