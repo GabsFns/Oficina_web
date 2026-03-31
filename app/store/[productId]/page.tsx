@@ -33,6 +33,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
    sku: "TRN-EAT-FS6306B",
    description: "Caixa de câmbio manual de 6 marchas, alta durabilidade para caminhões médios e pesados.",
        images: [
+      "https://d3mi7368052s1h.cloudfront.net/Custom/Content/Products/99/54/995499_cambio-fs6306b-vw-2t2300042e-300480-z77g_z4_637414777452333329.webp",
       "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
       
     ]
