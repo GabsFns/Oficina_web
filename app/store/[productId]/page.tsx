@@ -24,17 +24,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   // Mock do produto baseado na sua estética
   const product = {
-      name: "Câmbio Eaton FS6306B",
-      brand: "Eaton",
-      category: "Transmissão",
-      price: 18000.00,
-      sku: "TRN-EAT-FS6306B",
-      description: "Caixa de câmbio manual de 6 marchas, alta durabilidade para caminhões médios e pesados.",
-      images: [
-        "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
-      ]
-    }
-    
+    name: "Câmbio Eaton FS6306B",
+    price: 18000.00,
+     brand: "Eaton",
+   category: "Transmissão",
+    rating: 4.9,
+    reviews: 124,
+   sku: "TRN-EAT-FS6306B",
+   description: "Caixa de câmbio manual de 6 marchas, alta durabilidade para caminhões médios e pesados.",
+       images: [
+      "https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=800"
+      
+    ]
+  };
+
+
+
+
   return (
     <div className="min-h-screen bg-white text-black font-sans pb-20">
       
