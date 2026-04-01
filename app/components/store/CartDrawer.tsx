@@ -1,16 +1,30 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Plus, Truck, ShieldCheck, ArrowRight } from "lucide-react";
+import {
+  X,
+  Minus,
+  Plus,
+  Trash2,
+  Truck,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
+
+import { useCartStore } from "../../zu/cartStore";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  cart: any[];
 };
 
-export default function CartDrawer({ open, onClose, cart }: Props) {
-  const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+export default function CartDrawer({ open, onClose }: Props) {
+  const { cart, removeItem, increase, decrease } = useCartStore();
+
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   return (
     <AnimatePresence>
@@ -59,8 +73,8 @@ export default function CartDrawer({ open, onClose, cart }: Props) {
                   Seu carrinho está vazio
                 </p>
               ) : (
-                cart.map((item, i) => (
-                  <div key={i} className="flex gap-4 group">
+                cart.map((item) => (
+                  <div key={item.id} className="flex gap-4 group">
                     <div className="w-24 h-24 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100">
                       <img
                         src={item.image}
@@ -78,24 +92,40 @@ export default function CartDrawer({ open, onClose, cart }: Props) {
                       </p>
 
                       <div className="flex justify-between items-center pt-2">
+                        {/* QUANTIDADE */}
                         <div className="flex items-center bg-gray-100 rounded-lg p-1 gap-3">
-                          <button className="p-1 hover:bg-white rounded shadow-sm">
+                          <button
+                            onClick={() => decrease(item.id)}
+                            className="p-1 hover:bg-white rounded shadow-sm"
+                          >
                             <Minus size={12} />
                           </button>
 
                           <span className="text-xs font-black px-1">
-                            {item.quantity || 1}
+                            {item.quantity}
                           </span>
 
-                          <button className="p-1 hover:bg-white rounded shadow-sm">
+                          <button
+                            onClick={() => increase(item.id)}
+                            className="p-1 hover:bg-white rounded shadow-sm"
+                          >
                             <Plus size={12} />
                           </button>
                         </div>
 
+                        {/* PREÇO */}
                         <span className="font-mono font-black text-sm">
-                          R$ {item.price.toLocaleString("pt-BR")}
+                          R$ {(item.price * item.quantity).toLocaleString("pt-BR")}
                         </span>
                       </div>
+
+                      {/* REMOVER */}
+                      <button
+                        onClick={() => removeItem(item.id)}
+                        className="text-[10px] text-red-500 font-bold uppercase mt-2"
+                      >
+                        Remover item
+                      </button>
                     </div>
                   </div>
                 ))
