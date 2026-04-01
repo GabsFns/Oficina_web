@@ -2,21 +2,28 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type CartItem = {
+type Product = {
   id: number;
   name: string;
   price: number;
   image: string;
   brand: string;
+};
+
+type CartItem = Product & {
   quantity: number;
 };
 
 type CartStore = {
   cart: CartItem[];
-  addItem: (product: CartItem) => void;
+
+  addItem: (product: Product) => void;
   removeItem: (id: number) => void;
   increase: (id: number) => void;
   decrease: (id: number) => void;
+
+  getTotalItems: () => number;
+  getTotalPrice: () => number;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -24,39 +31,40 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       cart: [],
 
-      addItem: (product) => {
-        const exists = get().cart.find((i) => i.id === product.id);
+      addItem: (product) =>
+        set((state) => {
+          const existing = state.cart.find((i) => i.id === product.id);
 
-        if (exists) {
-          set({
-            cart: get().cart.map((item) =>
-              item.id === product.id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-            ),
-          });
-        } else {
-          set({
-            cart: [...get().cart, { ...product, quantity: 1 }],
-          });
-        }
-      },
+          if (existing) {
+            return {
+              cart: state.cart.map((i) =>
+                i.id === product.id
+                  ? { ...i, quantity: i.quantity + 1 }
+                  : i
+              ),
+            };
+          }
 
-      removeItem: (id) => {
-        set({ cart: get().cart.filter((item) => item.id !== id) });
-      },
+          return {
+            cart: [...state.cart, { ...product, quantity: 1 }],
+          };
+        }),
 
-      increase: (id) => {
+      removeItem: (id) =>
+        set({
+          cart: get().cart.filter((item) => item.id !== id),
+        }),
+
+      increase: (id) =>
         set({
           cart: get().cart.map((item) =>
             item.id === id
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
-        });
-      },
+        }),
 
-      decrease: (id) => {
+      decrease: (id) =>
         set({
           cart: get().cart
             .map((item) =>
@@ -65,11 +73,19 @@ export const useCartStore = create<CartStore>()(
                 : item
             )
             .filter((item) => item.quantity > 0),
-        });
-      },
+        }),
+
+      getTotalItems: () =>
+        get().cart.reduce((acc, item) => acc + item.quantity, 0),
+
+      getTotalPrice: () =>
+        get().cart.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
     }),
     {
-      name: "cart-storage", 
+      name: "cart-storage",
     }
   )
 );

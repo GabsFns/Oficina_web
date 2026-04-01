@@ -19,12 +19,9 @@ type Props = {
 };
 
 export default function CartDrawer({ open, onClose }: Props) {
-  const { cart, removeItem, increase, decrease } = useCartStore();
+const { cart, removeItem, increase, decrease, getTotalPrice } = useCartStore();
 
-  const subtotal = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+const subtotal = getTotalPrice();
 
   return (
     <AnimatePresence>

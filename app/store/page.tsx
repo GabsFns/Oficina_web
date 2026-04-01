@@ -5,38 +5,21 @@ import Header from "../components/store/Header";
 import SidebarFilters from "../components/store/SideBarFilters";
 import ProductGrid from "../components/store/ProductGrid";
 import CartDrawer from "../components/store/CartDrawer";
+import { useCartStore } from "../zu/cartStore";
 
 const products = [
-  { id: 1, name: "Injetor Bosch Common Rail", category: "Injeção", price: 2450.00, image: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400", brand: "BOSCH", rating: 5.0, reviews: 120 },
- ];
-export default function PremiumStore() {
-  const [cart, setCart] = useState<any[]>([]);
-  const [openCart, setOpenCart] = useState(false);
+  {
+    id: 1,
+    name: "Injetor Bosch Common Rail",
+    category: "Injeção",
+    price: 2450.0,
+    image:
+      "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400",
+    brand: "BOSCH",
+  },
+];
 
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Todos");
-
-  // 🧠 FILTRO (search + categoria)
-  const filteredProducts = products.filter((p) => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-
-    const matchCategory =
-      category === "Todos" || p.category === category;
-
-    return matchSearch && matchCategory;
-  });
-
-  // 🛒 ADD TO CART
-  const addToCart = (e: React.MouseEvent, product: Product) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    setCart((prev) => [...prev, { ...product, quantity: 1 }]);
-    setOpenCart(true);
-  };
-
-
-  type Product = {
+type Product = {
   id: number;
   name: string;
   category: string;
@@ -45,45 +28,66 @@ export default function PremiumStore() {
   brand: string;
 };
 
+export default function PremiumStore() {
+  const { addItem, getTotalItems } = useCartStore();
+
+  const [openCart, setOpenCart] = useState(false);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("Todos");
+
+  const filteredProducts = products.filter((p) => {
+    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const matchCategory =
+      category === "Todos" || p.category === category;
+
+    return matchSearch && matchCategory;
+  });
+
+  const addToCart = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    addItem(product); // ✅ correto
+    setOpenCart(true);
+  };
+
   return (
     <div className="bg-[#f8f9fa] min-h-screen text-black">
-
+      
       {/* HEADER */}
       <Header
-        cartCount={cart.length}
+        cartCount={getTotalItems()} // ✅ agora correto
         onOpenCart={() => setOpenCart(true)}
         search={search}
         setSearch={setSearch}
       />
 
       {/* HERO */}
-       <section className="pt-24 px-6 md:px-12">
-        <div className="relative h-[300px] md:h-[450px] w-full rounded-[3rem] overflow-hidden bg-black group">
-          <img 
-            src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=1260" 
-            className="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-1000"
+      <section className="pt-24 px-6 md:px-12">
+        <div className="relative h-[300px] md:h-[450px] w-full rounded-[3rem] overflow-hidden bg-black">
+          <img
+            src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
-            <h1 className="text-white text-6xl md:text-9xl font-black uppercase italic tracking-tighter mb-4">SHOP</h1>
-            <p className="text-yellow-500 font-bold tracking-[0.5em] uppercase text-xs md:text-sm">Peças de alta performance diesel</p>
+          <div className="absolute inset-0 flex flex-col justify-center items-center">
+            <h1 className="text-white text-6xl font-black italic">
+              SHOP
+            </h1>
           </div>
         </div>
       </section>
 
       {/* MAIN */}
       <main className="px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-        {/* SIDEBAR */}
+        
         <SidebarFilters
           selectedCategory={category}
           setSelectedCategory={setCategory}
         />
 
-        {/* PRODUTOS */}
         <div className="lg:col-span-10 space-y-6">
-
-          {/* INFO TOPO */}
-          <div className="flex justify-between items-center">
+          
+          <div className="flex justify-between">
             <h2 className="font-black text-xl uppercase italic">
               Produtos
             </h2>
@@ -98,7 +102,6 @@ export default function PremiumStore() {
             onAdd={addToCart}
           />
         </div>
-
       </main>
 
       {/* CARRINHO */}
@@ -106,7 +109,6 @@ export default function PremiumStore() {
         open={openCart}
         onClose={() => setOpenCart(false)}
       />
-
     </div>
   );
 }

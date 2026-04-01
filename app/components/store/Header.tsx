@@ -20,6 +20,7 @@ export default function Header({cartCount,
       <div className="flex items-center gap-10">
         <div className="text-2xl font-black tracking-tighter uppercase italic">
           Vodorico<span className="text-yellow-600">ALM</span>
+          <div className="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-widest text-gray-400"> <a href="/" className="hover:text-black transition-colors">Oficina</a> </div>
         </div>
       </div>
 
