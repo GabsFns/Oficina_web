@@ -60,11 +60,16 @@ export default function PremiumStore() {
       />
 
       {/* HERO */}
-      <section className="pt-24 px-6 md:px-12">
-        <div className="h-[300px] md:h-[400px] rounded-[3rem] bg-black flex items-center justify-center">
-          <h1 className="text-white text-5xl font-black italic">
-            SHOP
-          </h1>
+       <section className="pt-24 px-6 md:px-12">
+        <div className="relative h-[300px] md:h-[450px] w-full rounded-[3rem] overflow-hidden bg-black group">
+          <img 
+            src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=1260" 
+            className="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-1000"
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
+            <h1 className="text-white text-6xl md:text-9xl font-black uppercase italic tracking-tighter mb-4">SHOP</h1>
+            <p className="text-yellow-500 font-bold tracking-[0.5em] uppercase text-xs md:text-sm">Peças de alta performance diesel</p>
+          </div>
         </div>
       </section>
 
