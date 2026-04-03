@@ -3,10 +3,12 @@ import { getStockHistory } from "@/app/service/stock.service";
 
 export async function GET(
   _: NextRequest,
-  { params }: { params: { productId: string } }
+  context: { params: Promise<{ productId: string }> }
 ) {
   try {
-    const history = await getStockHistory(params.productId);
+    const { productId } = await context.params;
+
+    const history = await getStockHistory(productId);
 
     return NextResponse.json(history);
   } catch (err: unknown) {
