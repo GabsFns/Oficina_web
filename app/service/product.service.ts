@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
+
 type CreateProductDTO = {
   name: string;
   description?: string;
@@ -26,7 +27,7 @@ export async function createProduct(data: CreateProductDTO) {
       },
       include: {
         images: true,
-        category: true,
+       
       },
     });
 
@@ -45,22 +46,36 @@ export async function createProduct(data: CreateProductDTO) {
   });
 }
 
+type ProductCategory =
+  | "MOTOR"
+  | "TRANSMISSAO"
+  | "FREIOS"
+  | "SUSPENSAO"
+  | "ELETRICO"
+  | "OUTROS";
+  
 export async function getProducts(query: {
   search?: string;
-  categoryId?: string;
+  category?: ProductCategory;
 }) {
   return prisma.product.findMany({
     where: {
       active: true,
-      name: {
-        contains: query.search,
-        mode: "insensitive",
-      },
-      categoryId: query.categoryId,
+
+      ...(query.search && {
+        name: {
+          contains: query.search,
+          mode: "insensitive",
+        },
+      }),
+
+      ...(query.category && {
+        category: query.category,
+      }),
     },
+
     include: {
       images: true,
-      category: true,
     },
   });
 }
@@ -70,7 +85,7 @@ export async function getProductById(id: string) {
     where: { id },
     include: {
       images: true,
-      category: true,
+     
     },
   });
 
